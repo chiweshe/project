@@ -14,3 +14,5 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
   application:
     name: user-management
+  messages:
+    basename: messages

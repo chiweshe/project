@@ -1,7 +1,19 @@
 package com.example.usermanagement.domain;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -15,12 +27,21 @@ public class UserGroup {
 
     private String name;
 
-    @ManyToMany
-    private Set<UserRole> roles;
+    private String description;
 
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    @OneToMany(mappedBy = "userGroup", cascade = CascadeType.ALL)
+    private Set<UserRegistration> userRegistration;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    Set<UserRole> userRole;
 
     private LocalDateTime dateCreated;
 
@@ -42,13 +63,14 @@ public class UserGroup {
         this.name = name;
     }
 
-    public Set<UserRole> getRoles() {
-        return roles;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
 
     public Status getStatus() {
         return status;
@@ -74,6 +96,22 @@ public class UserGroup {
         this.dateLastModified = dateLastModified;
     }
 
+    public Set<UserRegistration> getUserRegistration() {
+        return userRegistration;
+    }
+
+    public void setUserRegistration(Set<UserRegistration> userRegistration) {
+        this.userRegistration = userRegistration;
+    }
+
+    public Set<UserRole> getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(Set<UserRole> userRole) {
+        this.userRole = userRole;
+    }
+
     @PrePersist
     private void init() {
         dateCreated = LocalDateTime.now();
@@ -92,8 +130,10 @@ public class UserGroup {
         return "UserGroup{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", roles=" + roles +
+                ", description='" + description + '\'' +
                 ", status=" + status +
+                ", userRegistration=" + userRegistration +
+                ", userRole=" + userRole +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +
                 '}';

@@ -1,8 +1,11 @@
 package com.example.usermanagement.utils.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRoleDto {
     private Long id;
     private String name;

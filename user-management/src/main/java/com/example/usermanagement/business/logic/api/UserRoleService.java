@@ -6,6 +6,9 @@ import java.util.Locale;
 
 public interface UserRoleService {
 
-    UserRoleResponse create(CreateUserRoleRequest createUserRoleRequest, Locale locale, String username);
+    public UserRoleResponse create(CreateUserRoleRequest createUserRoleRequest, Locale locale, String username);
+    public UserRoleResponse delete(Long id, Locale locale, String username);
+    public UserRoleResponse findById(Long id, Locale locale, String username);
+    public UserRoleResponse findAll(int page, int size, Locale locale);
 
 }

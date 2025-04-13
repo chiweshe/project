@@ -14,6 +14,10 @@ import com.example.usermanagement.utils.responses.UserRoleResponse;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -73,6 +77,62 @@ public class UserRoleServiceImpl implements UserRoleService {
         return buildResponse(201, true, message, userRoleDtoReturned, null,
                 null);
     }
+
+    @Override
+    public UserRoleResponse delete(Long id, Locale locale, String username) {
+        return null;
+    }
+
+    @Override
+    public UserRoleResponse findById(Long id, Locale locale, String username) {
+        return null;
+    }
+
+    @Override
+    public UserRoleResponse findAll(int page, int size, Locale locale) {
+        String message = "";
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<UserRole> userRolePage = userRoleRepository.findByStatusNot(Status.DELETED, pageable);
+        Page<UserRoleDto> userRoleDtoPage = convertUserRoleEntityToUserRoleDto(userRolePage);
+
+        if (userRolePage.getContent().isEmpty()) {
+            message = messageService.getMessage(Messages.MESSAGE_USER_ROLE_NOT_FOUND.getCode(),
+                    new String[]{}, locale);
+            return buildResponse(404, false, message, null, null,
+                    null);
+        }
+
+        message = messageService.getMessage(Messages.MESSAGE_USER_ROLE_RETRIEVED_SUCCESSFULLY.getCode(),
+                new String[]{}, locale);
+        return buildResponse(200, true, message, null, null,
+                userRoleDtoPage);
+    }
+
+    private Page<UserRoleDto> convertUserRoleEntityToUserRoleDto(Page<UserRole> userRolePage) {
+        List<UserRoleDto> userRoleDtoList = new ArrayList<>();
+
+        if (userRolePage != null) {
+            for (UserRole userRole : userRolePage) {
+                UserRoleDto userRoleDto = modelMapper.map(userRole, UserRoleDto.class);
+                userRoleDtoList.add(userRoleDto);
+
+            }
+        }
+
+        int page = userRolePage.getNumber();
+        int size = userRolePage.getSize();
+
+        size = size <= 0 ? 10 : size;
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return new PageImpl<UserRoleDto>(userRoleDtoList, pageable, userRolePage.getTotalElements());
+
+    }
+
+
     private UserRoleResponse buildResponse(int statusCode, Boolean success, String message, UserRoleDto userRoleDto,
                                              List<UserRoleDto> userRoleDtoList, Page<UserRoleDto> userRoleDtoPage) {
 

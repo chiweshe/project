@@ -1,13 +1,15 @@
 package com.example.usermanagement.utils.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserGroupDto {
 
     private Long id;
     private String name;
-    private Set<Long> roleIds;
+    private List<UserRoleDto> userRolesDtos;
     private String status;
     private LocalDateTime dateCreated;
     private LocalDateTime dateLastModified;
@@ -28,12 +30,12 @@ public class UserGroupDto {
         this.name = name;
     }
 
-    public Set<Long> getRoleIds() {
-        return roleIds;
+    public List<UserRoleDto> getUserRolesDtos() {
+        return userRolesDtos;
     }
 
-    public void setRoleIds(Set<Long> roleIds) {
-        this.roleIds = roleIds;
+    public void setUserRolesDtos(List<UserRoleDto> userRolesDtos) {
+        this.userRolesDtos = userRolesDtos;
     }
 
     public String getStatus() {
@@ -65,7 +67,7 @@ public class UserGroupDto {
         return "UserGroupDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", roleIds=" + roleIds +
+                ", userRolesDtos=" + userRolesDtos +
                 ", status='" + status + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +

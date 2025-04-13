@@ -1,7 +1,10 @@
 package com.example.usermanagement.utils.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDateTime;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRegistrationDto {
 
     private Long id;

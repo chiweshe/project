@@ -24,4 +24,24 @@ public class UserRoleProcessorImpl implements UserRoleProcessor {
         logger.info("Outgoing response for create a role : {}", userRoleResponse);
         return userRoleResponse;
     }
+
+    @Override
+    public UserRoleResponse delete(Long id, Locale locale, String username) {
+        return null;
+    }
+
+    @Override
+    public UserRoleResponse findById(Long id, Locale locale, String username) {
+        return null;
+    }
+
+    @Override
+    public UserRoleResponse findAll(int page, int size, Locale locale, String username) {
+        logger.info("Incoming request to retrieve user roles as pages");
+        UserRoleResponse userRoleResponse = userRoleService.findAll(page,size,locale);
+        logger.info("Outgoing response for retrieving user roles as pages : {}", userRoleResponse);
+        return userRoleResponse;
+    }
+
 }
+
