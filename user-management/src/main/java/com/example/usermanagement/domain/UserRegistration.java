@@ -36,6 +36,14 @@ public class UserRegistration {
 
     private String mobileNumber;
 
+    private String locked;
+
+    private int loginAttempts;
+
+    private String resetPassword;
+
+    private String changePassword;
+
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -48,6 +56,7 @@ public class UserRegistration {
     private LocalDateTime dateCreated;
 
     private LocalDateTime dateLastModified;
+    private LocalDateTime dateLastLogin;
 
     public Long getId() {
         return id;
@@ -137,10 +146,54 @@ public class UserRegistration {
         this.dateLastModified = dateLastModified;
     }
 
+    public String getLocked() {
+        return locked;
+    }
+
+    public void setLocked(String locked) {
+        this.locked = locked;
+    }
+
+    public int getLoginAttempts() {
+        return loginAttempts;
+    }
+
+    public void setLoginAttempts(int loginAttempts) {
+        this.loginAttempts = loginAttempts;
+    }
+
+    public String getResetPassword() {
+        return resetPassword;
+    }
+
+    public void setResetPassword(String resetPassword) {
+        this.resetPassword = resetPassword;
+    }
+
+    public String getChangePassword() {
+        return changePassword;
+    }
+
+    public void setChangePassword(String changePassword) {
+        this.changePassword = changePassword;
+    }
+
+    public LocalDateTime getDateLastLogin() {
+        return dateLastLogin;
+    }
+
+    public void setDateLastLogin(LocalDateTime dateLastLogin) {
+        this.dateLastLogin = dateLastLogin;
+    }
+
     @PrePersist
     private void init(){
         dateCreated = LocalDateTime.now();
         status = Status.ACTIVE;
+        locked = "N";
+        loginAttempts = 0;
+        resetPassword = "N";
+        changePassword = "Y";
 
     }
 
@@ -160,10 +213,15 @@ public class UserRegistration {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", mobileNumber='" + mobileNumber + '\'' +
+                ", locked='" + locked + '\'' +
+                ", loginAttempts=" + loginAttempts +
+                ", resetPassword='" + resetPassword + '\'' +
+                ", changePassword='" + changePassword + '\'' +
                 ", status=" + status +
                 ", userGroup=" + userGroup +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +
+                ", dateLastLogin=" + dateLastLogin +
                 '}';
     }
 }

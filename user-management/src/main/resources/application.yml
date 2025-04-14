@@ -16,3 +16,16 @@ spring:
     name: user-management
   messages:
     basename: messages
+
+admin:
+  email:
+    address: chiwesheronny@gmail.com
+    server: 192.168.101.60
+    port: 25
+  default-user:
+    username: ronald
+    password: Password123!
+
+session:
+  expireTime: 18000
+  jobToDelete: "0 0 * * * *"

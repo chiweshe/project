@@ -1,7 +1,6 @@
 package com.example.usermanagement.utils.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,7 +13,12 @@ public class UserRegistrationDto {
     private String email;
     private String mobileNumber;
     private String status;
-    private Long userGroupId;
+    private UserGroupDto userGroupDto;
+    private String locked;
+    private int loginAttempts;
+    private String resetPassword;
+    private String changePassword;
+    private String password;
     private LocalDateTime dateCreated;
     private LocalDateTime dateLastModified;
 
@@ -74,12 +78,44 @@ public class UserRegistrationDto {
         this.status = status;
     }
 
-    public Long getUserGroupId() {
-        return userGroupId;
+    public UserGroupDto getUserGroupDto() {
+        return userGroupDto;
     }
 
-    public void setUserGroupId(Long userGroupId) {
-        this.userGroupId = userGroupId;
+    public void setUserGroupDto(UserGroupDto userGroupDto) {
+        this.userGroupDto = userGroupDto;
+    }
+
+    public String getLocked() {
+        return locked;
+    }
+
+    public void setLocked(String locked) {
+        this.locked = locked;
+    }
+
+    public int getLoginAttempts() {
+        return loginAttempts;
+    }
+
+    public void setLoginAttempts(int loginAttempts) {
+        this.loginAttempts = loginAttempts;
+    }
+
+    public String getResetPassword() {
+        return resetPassword;
+    }
+
+    public void setResetPassword(String resetPassword) {
+        this.resetPassword = resetPassword;
+    }
+
+    public String getChangePassword() {
+        return changePassword;
+    }
+
+    public void setChangePassword(String changePassword) {
+        this.changePassword = changePassword;
     }
 
     public LocalDateTime getDateCreated() {
@@ -98,6 +134,14 @@ public class UserRegistrationDto {
         this.dateLastModified = dateLastModified;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "UserRegistrationDto{" +
@@ -108,7 +152,12 @@ public class UserRegistrationDto {
                 ", email='" + email + '\'' +
                 ", mobileNumber='" + mobileNumber + '\'' +
                 ", status='" + status + '\'' +
-                ", userGroupId=" + userGroupId +
+                ", userGroupDto=" + userGroupDto +
+                ", locked='" + locked + '\'' +
+                ", loginAttempts=" + loginAttempts +
+                ", resetPassword='" + resetPassword + '\'' +
+                ", changePassword='" + changePassword + '\'' +
+                ", password='" + password + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +
                 '}';
