@@ -11,11 +11,15 @@ import com.example.employeemanagement.utils.messages.api.MessageService;
 import com.example.employeemanagement.utils.requests.CreateDepartmentRequest;
 import com.example.employeemanagement.utils.responses.DepartmentResponse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+@Service
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
@@ -51,10 +55,18 @@ public class DepartmentServiceImpl implements DepartmentService {
                     locale);
             return buildResponse(400, false, message, null, null,
                     null);
-
         }
 
-        return null;
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Department departmentToBeSaved = modelMapper.map(createDepartmentRequest, Department.class);
+        Department departmentSaved = departmentRepository.save(departmentToBeSaved);
+        DepartmentDto departmentDtoReturned = modelMapper.map(departmentSaved, DepartmentDto.class);
+
+        message = messageService.getMessage(Messages.DEPARTMENT_CREATED_SUCCESSFULLY.getCode(), new String[]{},
+                locale);
+
+        return buildResponse(201, true, message, departmentDtoReturned, null,
+                null);
     }
     public DepartmentResponse buildResponse(int statusCode, Boolean success, String message, DepartmentDto departmentDto,
                                             List<DepartmentDto> departmentDtoList, Page<DepartmentDto> departmentDtoPage) {

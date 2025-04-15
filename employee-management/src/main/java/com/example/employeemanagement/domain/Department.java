@@ -7,7 +7,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -66,6 +69,19 @@ public class Department {
 
     public void setDateLastModified(LocalDateTime dateLastModified) {
         this.dateLastModified = dateLastModified;
+    }
+
+    @PrePersist
+    private void init(){
+        dateCreated = LocalDateTime.now();
+        status = Status.ACTIVE;
+
+    }
+
+    @PreUpdate
+    public void update(){
+
+        dateLastModified = LocalDateTime.now();
     }
 
     @Override

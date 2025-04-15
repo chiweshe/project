@@ -1,32 +1,10 @@
-package com.example.employeemanagement.domain;
+package com.example.employeemanagement.utils.requests;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+public class CreateEmployeeRequest {
 
-@Entity
-@Table(name = "employee")
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String firstName;
     private String lastName;
     private String middleName;
@@ -41,25 +19,7 @@ public class Employee {
     private String employmentType;
     private BigDecimal salary;
     private String workLocation;
-    @Column(name = "status", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Status status;
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "department_id", referencedColumnName = "id")
-    private Department department;
-
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateLastModified;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long departmentId;
 
     public String getFirstName() {
         return firstName;
@@ -173,49 +133,18 @@ public class Employee {
         this.workLocation = workLocation;
     }
 
-
-    public Status getStatus() {
-        return status;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(LocalDateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public LocalDateTime getDateLastModified() {
-        return dateLastModified;
-    }
-
-    public void setDateLastModified(LocalDateTime dateLastModified) {
-        this.dateLastModified = dateLastModified;
-    }
-
-    @PrePersist
-    private void init(){
-        dateCreated = LocalDateTime.now();
-        status = Status.ACTIVE;
-
-    }
-
-    @PreUpdate
-    public void update(){
-
-        dateLastModified = LocalDateTime.now();
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+        return "CreateEmployeeRequest{" +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", gender='" + gender + '\'' +
@@ -229,10 +158,7 @@ public class Employee {
                 ", employmentType='" + employmentType + '\'' +
                 ", salary=" + salary +
                 ", workLocation='" + workLocation + '\'' +
-                ", status=" + status +
-                ", department=" + department +
-                ", dateCreated=" + dateCreated +
-                ", dateLastModified=" + dateLastModified +
+                ", departmentId=" + departmentId +
                 '}';
     }
 }

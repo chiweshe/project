@@ -2,9 +2,13 @@ package com.example.employeemanagement.repository;
 
 import com.example.employeemanagement.domain.Department;
 import com.example.employeemanagement.domain.Status;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface DepartmentRepository {
+public interface DepartmentRepository extends JpaRepository<Department, Long>, JpaSpecificationExecutor<Department> {
     Optional<Department> findByNameAndStatusNot(String name, Status status);
+
+    Department save(Department department);
 }
