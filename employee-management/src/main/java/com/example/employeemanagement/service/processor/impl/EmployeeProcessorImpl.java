@@ -21,7 +21,7 @@ public class EmployeeProcessorImpl implements EmployeeProcessor {
     @Override
     public EmployeeResponse save(CreateEmployeeRequest createEmployeeRequest, Locale locale, String username) {
         logger.info("Incoming request to save employee....");
-        EmployeeResponse employeeResponse = new EmployeeResponse();
+        EmployeeResponse employeeResponse = employeeService.create(createEmployeeRequest, locale, username);
         return employeeResponse;
     }
 }

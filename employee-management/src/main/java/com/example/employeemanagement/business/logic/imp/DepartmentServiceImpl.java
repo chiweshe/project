@@ -13,8 +13,9 @@ import com.example.employeemanagement.utils.responses.DepartmentResponse;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -68,6 +69,65 @@ public class DepartmentServiceImpl implements DepartmentService {
         return buildResponse(201, true, message, departmentDtoReturned, null,
                 null);
     }
+
+    @Override
+    public DepartmentResponse findDepartmentById(Long id, Locale locale) {
+        Optional<Department> departmentOpt = departmentRepository.findByIdAndStatusNot(id, Status.DELETED);
+
+        if (departmentOpt.isEmpty()) {
+            String message = messageService.getMessage(Messages.DEPARTMENT_NOT_FOUND.getCode(), new String[]{}, locale);
+            return buildResponse(404, false, message, null, null, null);
+        }
+
+        DepartmentDto departmentDto = modelMapper.map(departmentOpt.get(), DepartmentDto.class);
+        String message = messageService.getMessage(Messages.DEPARTMENT_RETRIEVED_SUCCESSFUL.getCode(), new String[]{}, locale);
+        return buildResponse(200, true, message, departmentDto, null, null);
+    }
+
+    @Override
+    public DepartmentResponse deleteDepartmentById(Long id, Locale locale, String username) {
+        Optional<Department> departmentOpt = departmentRepository.findByIdAndStatusNot(id, Status.DELETED);
+
+        if (departmentOpt.isEmpty()) {
+            String message = messageService.getMessage(Messages.DEPARTMENT_NOT_FOUND.getCode(), new String[]{}, locale);
+            return buildResponse(404, false, message, null, null, null);
+        }
+
+        Department department = departmentOpt.get();
+
+        department.setStatus(Status.DELETED);
+
+        department.setName(department.getName() + "_deleted_" + LocalDateTime.now());
+
+        Department updatedDepartment = departmentRepository.save(department);
+
+        DepartmentDto departmentDto = modelMapper.map(updatedDepartment, DepartmentDto.class);
+        String message = messageService.getMessage(Messages.DEPARTMENT_DELETED_SUCCESSFULLY.getCode(), new String[]{}, locale);
+        return buildResponse(200, true, message, departmentDto, null, null);
+    }
+
+    @Override
+    public DepartmentResponse getAllDepartmentsAsList(Locale locale) {
+        List<Department> departments = departmentRepository.findAllByStatusNot(Status.DELETED);
+
+        List<DepartmentDto> departmentDtos = departments.stream()
+                .map(department -> modelMapper.map(department, DepartmentDto.class))
+                .toList();
+
+        String message = messageService.getMessage(Messages.DEPARTMENTS_RETRIEVED_SUCCESSFUL.getCode(), new String[]{}, locale);
+        return buildResponse(200, true, message, null, departmentDtos, null);
+    }
+
+    @Override
+    public DepartmentResponse getAllDepartmentsAsPage(Pageable pageable, Locale locale) {
+        Page<Department> departmentPage = departmentRepository.findAllByStatusNot(Status.DELETED, pageable);
+
+        Page<DepartmentDto> departmentDtoPage = departmentPage.map(department -> modelMapper.map(department, DepartmentDto.class));
+
+        String message = messageService.getMessage(Messages.DEPARTMENTS_RETRIEVED_SUCCESSFUL.getCode(), new String[]{}, locale);
+        return buildResponse(200, true, message, null, null, departmentDtoPage);
+    }
+
     public DepartmentResponse buildResponse(int statusCode, Boolean success, String message, DepartmentDto departmentDto,
                                             List<DepartmentDto> departmentDtoList, Page<DepartmentDto> departmentDtoPage) {
         DepartmentResponse departmentResponse = new DepartmentResponse();

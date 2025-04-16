@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -196,6 +195,14 @@ public class Employee {
 
     public void setDateLastModified(LocalDateTime dateLastModified) {
         this.dateLastModified = dateLastModified;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @PrePersist
