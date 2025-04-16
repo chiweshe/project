@@ -12,12 +12,22 @@ public class SalaryStructure {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long employeeId;
-    BigDecimal basicSalary;
-    BigDecimal bonus;
-    BigDecimal otherAllowances;
-    BigDecimal deductions;
-    LocalDate effectiveFrom;
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    private BigDecimal basicSalary;
+
+    private BigDecimal bonus;
+
+    private BigDecimal otherAllowances;
+
+    private BigDecimal deductions;
+
+    private LocalDate effectiveFrom;
+
     Boolean isActive;
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -27,12 +37,20 @@ public class SalaryStructure {
 
     private LocalDateTime dateLastModified;
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public BigDecimal getBasicSalary() {
@@ -119,10 +137,13 @@ public class SalaryStructure {
 
         dateLastModified = LocalDateTime.now();
     }
+
+
     @Override
     public String toString() {
         return "SalaryStructure{" +
-                "employeeId=" + employeeId +
+                "id=" + id +
+                ", employee=" + employee +
                 ", basicSalary=" + basicSalary +
                 ", bonus=" + bonus +
                 ", otherAllowances=" + otherAllowances +

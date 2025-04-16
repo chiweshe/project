@@ -1,7 +1,15 @@
 package com.example.employeemanagement.domain;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,9 +19,10 @@ public class Allowance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    String name;
-    String description;
-    Boolean isTaxable;
+
+    private String name;
+    private String description;
+    private Boolean isTaxable;
 
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -78,6 +87,7 @@ public class Allowance {
     public void setDateLastModified(LocalDateTime dateLastModified) {
         this.dateLastModified = dateLastModified;
     }
+
 
     @PrePersist
     private void init(){

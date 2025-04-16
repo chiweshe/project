@@ -1,7 +1,18 @@
 package com.example.employeemanagement.domain;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -12,14 +23,26 @@ public class Payroll {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long employeeId;
-    YearMonth payrollMonth;
-    BigDecimal basicSalary;
-    BigDecimal totalAllowances;
-    BigDecimal totalDeductions;
-    BigDecimal grossPay;
-    BigDecimal netPay;
-    LocalDateTime generatedAt;
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    private YearMonth payrollMonth;
+
+    private BigDecimal basicSalary;
+
+    private BigDecimal totalAllowances;
+
+    private BigDecimal totalDeductions;
+
+    private BigDecimal grossPay;
+
+    private BigDecimal netPay;
+
+    private LocalDateTime generatedAt;
+
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -28,12 +51,20 @@ public class Payroll {
 
     private LocalDateTime dateLastModified;
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public YearMonth getPayrollMonth() {
@@ -132,7 +163,8 @@ public class Payroll {
     @Override
     public String toString() {
         return "Payroll{" +
-                "employeeId=" + employeeId +
+                "id=" + id +
+                ", employee=" + employee +
                 ", payrollMonth=" + payrollMonth +
                 ", basicSalary=" + basicSalary +
                 ", totalAllowances=" + totalAllowances +
@@ -140,6 +172,9 @@ public class Payroll {
                 ", grossPay=" + grossPay +
                 ", netPay=" + netPay +
                 ", generatedAt=" + generatedAt +
+                ", status=" + status +
+                ", dateCreated=" + dateCreated +
+                ", dateLastModified=" + dateLastModified +
                 '}';
     }
 }

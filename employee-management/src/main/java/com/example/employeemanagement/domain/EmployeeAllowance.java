@@ -1,7 +1,18 @@
 package com.example.employeemanagement.domain;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,9 +22,18 @@ public class EmployeeAllowance {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        Long employeeId;
-        Long allowanceId;
+        private Long id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "employee_id", nullable = false)
+        private Employee employee;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "allowance_id", nullable = false)
+        private Allowance allowance;
+
         BigDecimal amount;
+
         @Column(name = "status", nullable = false)
         @Enumerated(value = EnumType.STRING)
         private Status status;
@@ -22,20 +42,28 @@ public class EmployeeAllowance {
 
         private LocalDateTime dateLastModified;
 
-        public Long getEmployeeId() {
-                return employeeId;
+        public Long getId() {
+                return id;
         }
 
-        public void setEmployeeId(Long employeeId) {
-                this.employeeId = employeeId;
+        public void setId(Long id) {
+                this.id = id;
         }
 
-        public Long getAllowanceId() {
-                return allowanceId;
+        public Employee getEmployee() {
+                return employee;
         }
 
-        public void setAllowanceId(Long allowanceId) {
-                this.allowanceId = allowanceId;
+        public void setEmployee(Employee employee) {
+                this.employee = employee;
+        }
+
+        public Allowance getAllowance() {
+                return allowance;
+        }
+
+        public void setAllowance(Allowance allowance) {
+                this.allowance = allowance;
         }
 
         public BigDecimal getAmount() {
@@ -71,14 +99,14 @@ public class EmployeeAllowance {
         }
 
         @PrePersist
-        private void init(){
+        private void init() {
                 dateCreated = LocalDateTime.now();
                 status = Status.ACTIVE;
 
         }
 
         @PreUpdate
-        public void update(){
+        public void update() {
 
                 dateLastModified = LocalDateTime.now();
         }
@@ -86,9 +114,13 @@ public class EmployeeAllowance {
         @Override
         public String toString() {
                 return "EmployeeAllowance{" +
-                        "employeeId=" + employeeId +
-                        ", allowanceId=" + allowanceId +
+                        "id=" + id +
+                        ", employee=" + employee +
+                        ", allowance=" + allowance +
                         ", amount=" + amount +
+                        ", status=" + status +
+                        ", dateCreated=" + dateCreated +
+                        ", dateLastModified=" + dateLastModified +
                         '}';
         }
 }

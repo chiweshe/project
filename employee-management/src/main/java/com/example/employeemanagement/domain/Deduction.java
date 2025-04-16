@@ -1,6 +1,15 @@
 package com.example.employeemanagement.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +19,12 @@ public class Deduction {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        String name;
-        String description;
+        private Long id;
+
+        private String name;
+
+        private String description;
+
         @Column(name = "status", nullable = false)
         @Enumerated(value = EnumType.STRING)
         private Status status;
@@ -60,6 +73,14 @@ public class Deduction {
                 this.dateLastModified = dateLastModified;
         }
 
+        public Long getId() {
+                return id;
+        }
+
+        public void setId(Long id) {
+                this.id = id;
+        }
+
         @PrePersist
         private void init(){
                 dateCreated = LocalDateTime.now();
@@ -72,10 +93,12 @@ public class Deduction {
 
                 dateLastModified = LocalDateTime.now();
         }
+
         @Override
         public String toString() {
                 return "Deduction{" +
-                        "name='" + name + '\'' +
+                        "id=" + id +
+                        ", name='" + name + '\'' +
                         ", description='" + description + '\'' +
                         ", status=" + status +
                         ", dateCreated=" + dateCreated +

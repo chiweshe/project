@@ -11,20 +11,22 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
+
 
 @Entity
-@Table(name = "payslip")
-public class Payslip {
+@Table(name = "tax_slab")
+public class TaxSlab {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long payrollId;
+    private BigDecimal lowerBound;
 
-    private String payslipUrl;
-
-    LocalDateTime generatedAt;
+    private BigDecimal upperBound;
+    // The tax rate for this slab (0.05 for 5%, 0.2 for 20%)
+    private BigDecimal rate;
 
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -34,28 +36,36 @@ public class Payslip {
 
     private LocalDateTime dateLastModified;
 
-    public Long getPayrollId() {
-        return payrollId;
+    public Long getId() {
+        return id;
     }
 
-    public void setPayrollId(Long payrollId) {
-        this.payrollId = payrollId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getPayslipUrl() {
-        return payslipUrl;
+    public BigDecimal getLowerBound() {
+        return lowerBound;
     }
 
-    public void setPayslipUrl(String payslipUrl) {
-        this.payslipUrl = payslipUrl;
+    public void setLowerBound(BigDecimal lowerBound) {
+        this.lowerBound = lowerBound;
     }
 
-    public LocalDateTime getGeneratedAt() {
-        return generatedAt;
+    public BigDecimal getUpperBound() {
+        return upperBound;
     }
 
-    public void setGeneratedAt(LocalDateTime generatedAt) {
-        this.generatedAt = generatedAt;
+    public void setUpperBound(BigDecimal upperBound) {
+        this.upperBound = upperBound;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 
     public Status getStatus() {
@@ -95,13 +105,16 @@ public class Payslip {
         dateLastModified = LocalDateTime.now();
     }
 
-
     @Override
     public String toString() {
-        return "Payslip{" +
-                "payrollId=" + payrollId +
-                ", payslipUrl='" + payslipUrl + '\'' +
-                ", generatedAt=" + generatedAt +
+        return "TaxSlab{" +
+                "id=" + id +
+                ", lowerBound=" + lowerBound +
+                ", upperBound=" + upperBound +
+                ", rate=" + rate +
+                ", status=" + status +
+                ", dateCreated=" + dateCreated +
+                ", dateLastModified=" + dateLastModified +
                 '}';
     }
 }
