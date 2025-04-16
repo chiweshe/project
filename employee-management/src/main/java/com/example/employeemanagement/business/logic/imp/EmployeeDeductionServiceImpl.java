@@ -1,4 +1,8 @@
 package com.example.employeemanagement.business.logic.imp;
 
-public class EmployeeDeductionServiceImpl {
+import com.example.employeemanagement.business.logic.api.EmployeeDeductionService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmployeeDeductionServiceImpl implements EmployeeDeductionService {
 }

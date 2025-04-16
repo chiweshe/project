@@ -1,7 +1,9 @@
 package com.example.employeemanagement.business.config;
 
+import com.example.employeemanagement.business.validation.api.AllowanceServiceValidator;
 import com.example.employeemanagement.business.validation.api.DepartmentServiceValidator;
 import com.example.employeemanagement.business.validation.api.EmployeeServiceValidator;
+import com.example.employeemanagement.business.validation.impl.AllowanceServiceValidatorImpl;
 import com.example.employeemanagement.business.validation.impl.DepartmentServiceValidatorImpl;
 import com.example.employeemanagement.business.validation.impl.EmployeeServiceValidatorImpl;
 import com.example.employeemanagement.repository.config.DataConfig;
@@ -22,5 +24,10 @@ public class BusinessConfig {
     @Bean
     public EmployeeServiceValidator employeeServiceValidator() {
         return new EmployeeServiceValidatorImpl();
+    }
+
+    @Bean
+    public AllowanceServiceValidator allowanceServiceValidator() {
+        return new AllowanceServiceValidatorImpl();
     }
 }
