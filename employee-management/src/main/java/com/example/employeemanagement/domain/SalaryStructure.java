@@ -3,23 +3,22 @@ package com.example.employeemanagement.domain;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 
 @Entity
-@Table(name = "payroll")
-public class Payroll {
+@Table(name = "salary_structure")
+public class SalaryStructure {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long employeeId;
-    YearMonth payrollMonth;
     BigDecimal basicSalary;
-    BigDecimal totalAllowances;
-    BigDecimal totalDeductions;
-    BigDecimal grossPay;
-    BigDecimal netPay;
-    LocalDateTime generatedAt;
+    BigDecimal bonus;
+    BigDecimal otherAllowances;
+    BigDecimal deductions;
+    LocalDate effectiveFrom;
+    Boolean isActive;
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -36,14 +35,6 @@ public class Payroll {
         this.employeeId = employeeId;
     }
 
-    public YearMonth getPayrollMonth() {
-        return payrollMonth;
-    }
-
-    public void setPayrollMonth(YearMonth payrollMonth) {
-        this.payrollMonth = payrollMonth;
-    }
-
     public BigDecimal getBasicSalary() {
         return basicSalary;
     }
@@ -52,44 +43,44 @@ public class Payroll {
         this.basicSalary = basicSalary;
     }
 
-    public BigDecimal getTotalAllowances() {
-        return totalAllowances;
+    public BigDecimal getBonus() {
+        return bonus;
     }
 
-    public void setTotalAllowances(BigDecimal totalAllowances) {
-        this.totalAllowances = totalAllowances;
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
     }
 
-    public BigDecimal getTotalDeductions() {
-        return totalDeductions;
+    public BigDecimal getOtherAllowances() {
+        return otherAllowances;
     }
 
-    public void setTotalDeductions(BigDecimal totalDeductions) {
-        this.totalDeductions = totalDeductions;
+    public void setOtherAllowances(BigDecimal otherAllowances) {
+        this.otherAllowances = otherAllowances;
     }
 
-    public BigDecimal getGrossPay() {
-        return grossPay;
+    public BigDecimal getDeductions() {
+        return deductions;
     }
 
-    public void setGrossPay(BigDecimal grossPay) {
-        this.grossPay = grossPay;
+    public void setDeductions(BigDecimal deductions) {
+        this.deductions = deductions;
     }
 
-    public BigDecimal getNetPay() {
-        return netPay;
+    public LocalDate getEffectiveFrom() {
+        return effectiveFrom;
     }
 
-    public void setNetPay(BigDecimal netPay) {
-        this.netPay = netPay;
+    public void setEffectiveFrom(LocalDate effectiveFrom) {
+        this.effectiveFrom = effectiveFrom;
     }
 
-    public LocalDateTime getGeneratedAt() {
-        return generatedAt;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public void setGeneratedAt(LocalDateTime generatedAt) {
-        this.generatedAt = generatedAt;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
     public Status getStatus() {
@@ -128,18 +119,19 @@ public class Payroll {
 
         dateLastModified = LocalDateTime.now();
     }
-
     @Override
     public String toString() {
-        return "Payroll{" +
+        return "SalaryStructure{" +
                 "employeeId=" + employeeId +
-                ", payrollMonth=" + payrollMonth +
                 ", basicSalary=" + basicSalary +
-                ", totalAllowances=" + totalAllowances +
-                ", totalDeductions=" + totalDeductions +
-                ", grossPay=" + grossPay +
-                ", netPay=" + netPay +
-                ", generatedAt=" + generatedAt +
+                ", bonus=" + bonus +
+                ", otherAllowances=" + otherAllowances +
+                ", deductions=" + deductions +
+                ", effectiveFrom=" + effectiveFrom +
+                ", isActive=" + isActive +
+                ", status=" + status +
+                ", dateCreated=" + dateCreated +
+                ", dateLastModified=" + dateLastModified +
                 '}';
     }
 }

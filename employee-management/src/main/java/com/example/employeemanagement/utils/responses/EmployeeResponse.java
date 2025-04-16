@@ -1,9 +1,11 @@
 package com.example.employeemanagement.utils.responses;
 
 import com.example.employeemanagement.utils.dto.EmployeeDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.domain.Page;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EmployeeResponse extends CommonResponse {
 
     private EmployeeDto employeeDto;

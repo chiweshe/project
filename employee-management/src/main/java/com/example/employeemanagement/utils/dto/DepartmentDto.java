@@ -1,7 +1,10 @@
 package com.example.employeemanagement.utils.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDateTime;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentDto {
 
     private Long id;
