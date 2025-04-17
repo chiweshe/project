@@ -1,11 +1,7 @@
 package com.example.employeemanagement.business.config;
 
-import com.example.employeemanagement.business.validation.api.AllowanceServiceValidator;
-import com.example.employeemanagement.business.validation.api.DepartmentServiceValidator;
-import com.example.employeemanagement.business.validation.api.EmployeeServiceValidator;
-import com.example.employeemanagement.business.validation.impl.AllowanceServiceValidatorImpl;
-import com.example.employeemanagement.business.validation.impl.DepartmentServiceValidatorImpl;
-import com.example.employeemanagement.business.validation.impl.EmployeeServiceValidatorImpl;
+import com.example.employeemanagement.business.validation.api.*;
+import com.example.employeemanagement.business.validation.impl.*;
 import com.example.employeemanagement.repository.config.DataConfig;
 import com.example.employeemanagement.utils.config.UtilsConfig;
 import org.springframework.context.annotation.Bean;
@@ -29,5 +25,15 @@ public class BusinessConfig {
     @Bean
     public AllowanceServiceValidator allowanceServiceValidator() {
         return new AllowanceServiceValidatorImpl();
+    }
+
+    @Bean
+    public DeductionServiceValidator deductionServiceValidator() {
+        return new DeductionServiceValidatorImpl();
+    }
+
+    @Bean
+    public TaxSlabServiceValidator taxSlabServiceValidator() {
+        return new TaxSlabServiceValidatorImpl();
     }
 }

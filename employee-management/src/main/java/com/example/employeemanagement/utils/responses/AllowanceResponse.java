@@ -8,16 +8,16 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AllowanceResponse extends CommonResponse {
 
-    private AllowanceDto allowance;
+    private AllowanceDto allowanceDto;
     private List<AllowanceDto> allowanceDtoList;
     private Page<AllowanceDto> allowanceDtoPage;
 
-    public AllowanceDto getAllowance() {
-        return allowance;
+    public AllowanceDto getAllowanceDto() {
+        return allowanceDto;
     }
 
-    public void setAllowance(AllowanceDto allowance) {
-        this.allowance = allowance;
+    public void setAllowanceDto(AllowanceDto allowanceDto) {
+        this.allowanceDto = allowanceDto;
     }
 
     public List<AllowanceDto> getAllowanceDtoList() {
@@ -39,7 +39,7 @@ public class AllowanceResponse extends CommonResponse {
     @Override
     public String toString() {
         return "AllowanceResponse{" +
-                "allowance=" + allowance +
+                "allowanceDto=" + allowanceDto +
                 ", allowanceDtoList=" + allowanceDtoList +
                 ", allowanceDtoPage=" + allowanceDtoPage +
                 '}';

@@ -1,38 +1,17 @@
-package com.example.employeemanagement.domain;
+package com.example.employeemanagement.utils.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import com.example.employeemanagement.domain.Status;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+public class TaxSlabDto {
 
-@Entity
-@Table(name = "tax_slab")
-public class TaxSlab {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private BigDecimal lowerBound;
-
     private BigDecimal upperBound;
     private BigDecimal rate;
-
-    @Column(name = "status", nullable = false)
-    @Enumerated(value = EnumType.STRING)
     private Status status;
-
     private LocalDateTime dateCreated;
-
     private LocalDateTime dateLastModified;
 
     public Long getId() {
@@ -91,22 +70,9 @@ public class TaxSlab {
         this.dateLastModified = dateLastModified;
     }
 
-    @PrePersist
-    private void init(){
-        dateCreated = LocalDateTime.now();
-        status = Status.ACTIVE;
-
-    }
-
-    @PreUpdate
-    public void update(){
-
-        dateLastModified = LocalDateTime.now();
-    }
-
     @Override
     public String toString() {
-        return "TaxSlab{" +
+        return "TaxSlabDto{" +
                 "id=" + id +
                 ", lowerBound=" + lowerBound +
                 ", upperBound=" + upperBound +

@@ -31,27 +31,32 @@ public class ServiceConfig {
         return new DeductionProcessorImpl(deductionService);
     }
 
-    @Bean
-    EmployeeDeductionProcessor employeeDeductionProcessor(EmployeeDeductionService employeeDeductionService) {
-        return new EmployeeDeductionProcessorImpl(employeeDeductionService);
-    }
+//    @Bean
+//    EmployeeDeductionProcessor employeeDeductionProcessor(EmployeeDeductionService employeeDeductionService) {
+//        return new EmployeeDeductionProcessorImpl(employeeDeductionService);
+//    }
+//
+//    @Bean
+//    EmployeeAllowanceProcessor employeeAllowanceProcessor(EmployeeAllowanceService employeeAllowanceService) {
+//        return new EmployeeAllowanceProcessorImpl(employeeAllowanceService);
+//    }
+//    @Bean
+//    SalaryStructureProcessor salaryStructureProcessor(SalaryStructureService salaryStructureService) {
+//        return new SalaryStructureProcessorImpl(salaryStructureService);
+//    }
+//
+//    @Bean
+//    PayrollProcessor payrollProcessor(PayrollService payrollService) {
+//        return new PayslipProcessorImpl(payrollService);
+//    }
+//
+//    @Bean
+//    PayslipProcessor payslipProcessor(PayslipService payslipService) {
+//        return  new PayslipProcessorImpl(payslipService);
+//    }
 
     @Bean
-    EmployeeAllowanceProcessor employeeAllowanceProcessor(EmployeeAllowanceService employeeAllowanceService) {
-        return new EmployeeAllowanceProcessorImpl(employeeAllowanceService);
-    }
-    @Bean
-    SalaryStructureProcessor salaryStructureProcessor(SalaryStructureService salaryStructureService) {
-        return new SalaryStructureProcessorImpl(salaryStructureService);
-    }
-
-    @Bean
-    PayrollProcessor payrollProcessor(PayrollService payrollService) {
-        return new PayslipProcessorImpl(payrollService);
-    }
-
-    @Bean
-    PayslipProcessor payslipProcessor(PayslipService payslipService) {
-        return  new PayslipProcessorImpl(payslipService);
+    TaxSlabProcessor taxSlabProcessor(TaxSlabService taxSlabService) {
+        return new TaxSlabProcessorImpl(taxSlabService);
     }
 }

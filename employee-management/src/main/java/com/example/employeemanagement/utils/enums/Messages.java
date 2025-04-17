@@ -15,7 +15,27 @@ public enum Messages {
     EMPLOYEE_NOT_FOUND("messages.employee_not_found"),
     EMPLOYEE_DELETED_SUCCESSFULLY("messages.employee_deleted_successfully"),
     EMPLOYEES_RETRIEVED_SUCCESSFULLY("messages.employees_retrieved_successfully"),
-    EMPLOYEE_RETRIEVED_SUCCESSFULLY("messages.employee_retrieved_successfully"),;
+    EMPLOYEE_RETRIEVED_SUCCESSFULLY("messages.employee_retrieved_successfully"),
+    ALLOWANCE_ALREADY_EXISTS("messages.allowance_already_exists"),
+    ALLOWANCE_CREATED_SUCCESSFULLY("messages.allowance_created_successfully"),
+    ALLOWANCE_NOT_FOUND("messages.allowance_not_found"),
+    ALLOWANCE_FOUND("messages.allowance_found"),
+    ALLOWANCE_LIST_FETCHED("messages.allowance_list_fetched"),
+    ALLOWANCE_DELETED_SUCCESSFULLY("messages.allowance_deleted_successfully"),
+    DEDUCTION_CREATED_SUCCESSFULLY("messages.deduction_created_successfully"),
+    DEDUCTION_ALREADY_EXISTS("messages.deduction_already_exists"),
+    DEDUCTION_NOT_FOUND("messages.deduction_not_found"),
+    DEDUCTION_FOUND("messages.deduction_found"),
+    DEDUCTION_LIST_FETCHED("messages.deduction_list_fetched"),
+    DEDUCTION_LIST_PAGED("messages.deduction_list_paged"),
+    DEDUCTION_DELETED_SUCCESSFULLY("messages.deduction_deleted_successfully"),
+    TAX_SLAB_NOT_FOUND("messages.tax_slab_not_found"),
+    TAX_SLAB_FOUND("messages.tax_slab_found"),
+    TAX_SLAB_LIST_FETCHED("messages.tax_slab_list_fetched"),
+    TAX_SLAB_LIST_PAGED("messages.tax_slab_list_paged"),
+    TAX_SLAB_DELETED_SUCCESSFULLY("messages.tax_slab_deleted_successfully"),
+    TAX_SLAB_ALREADY_EXISTS("messages.tax_slab_already_exists"),
+    TAX_SLAB_CREATED_SUCCESSFULLY("messages.tax_slab_created_successfully"),;
 
     private String code;
 

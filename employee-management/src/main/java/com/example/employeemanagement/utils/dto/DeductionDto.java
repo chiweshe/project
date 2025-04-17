@@ -1,13 +1,15 @@
 package com.example.employeemanagement.utils.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDateTime;
 
-public class AllowanceDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class DeductionDto {
 
     private Long id;
     private String name;
     private String description;
-    private Boolean isTaxable;
     private String status;
     private LocalDateTime dateCreated;
     private LocalDateTime dateLastModified;
@@ -36,14 +38,6 @@ public class AllowanceDto {
         this.description = description;
     }
 
-    public Boolean getTaxable() {
-        return isTaxable;
-    }
-
-    public void setTaxable(Boolean taxable) {
-        isTaxable = taxable;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -70,11 +64,10 @@ public class AllowanceDto {
 
     @Override
     public String toString() {
-        return "AllowanceDto{" +
+        return "DeductionDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", isTaxable=" + isTaxable +
                 ", status='" + status + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +

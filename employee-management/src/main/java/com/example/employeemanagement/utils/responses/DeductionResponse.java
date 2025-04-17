@@ -1,6 +1,6 @@
 package com.example.employeemanagement.utils.responses;
 
-import com.example.employeemanagement.utils.dto.DeductionsDto;
+import com.example.employeemanagement.utils.dto.DeductionDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.domain.Page;
 import java.util.List;
@@ -8,31 +8,40 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeductionResponse extends CommonResponse{
 
-    private DeductionsDto deductionsDto;
-    private List<DeductionsDto> deductionsDtoList;
-    private Page<DeductionsDto> deductionsDtoPage;
+    private DeductionDto deductionDto;
+    private List<DeductionDto> deductionDtoList;
+    private Page<DeductionDto> deductionDtoPage;
 
-    public DeductionsDto getDeductionsDto() {
-        return deductionsDto;
+    public DeductionDto getDeductionDto() {
+        return deductionDto;
     }
 
-    public void setDeductionsDto(DeductionsDto deductionsDto) {
-        this.deductionsDto = deductionsDto;
+    public void setDeductionDto(DeductionDto deductionDto) {
+        this.deductionDto = deductionDto;
     }
 
-    public List<DeductionsDto> getDeductionsDtoList() {
-        return deductionsDtoList;
+    public List<DeductionDto> getDeductionDtoList() {
+        return deductionDtoList;
     }
 
-    public void setDeductionsDtoList(List<DeductionsDto> deductionsDtoList) {
-        this.deductionsDtoList = deductionsDtoList;
+    public void setDeductionDtoList(List<DeductionDto> deductionDtoList) {
+        this.deductionDtoList = deductionDtoList;
     }
 
-    public Page<DeductionsDto> getDeductionsDtoPage() {
-        return deductionsDtoPage;
+    public Page<DeductionDto> getDeductionDtoPage() {
+        return deductionDtoPage;
     }
 
-    public void setDeductionsDtoPage(Page<DeductionsDto> deductionsDtoPage) {
-        this.deductionsDtoPage = deductionsDtoPage;
+    public void setDeductionDtoPage(Page<DeductionDto> deductionDtoPage) {
+        this.deductionDtoPage = deductionDtoPage;
+    }
+
+    @Override
+    public String toString() {
+        return "DeductionResponse{" +
+                "deductionDto=" + deductionDto +
+                ", deductionDtoList=" + deductionDtoList +
+                ", deductionDtoPage=" + deductionDtoPage +
+                '}';
     }
 }
