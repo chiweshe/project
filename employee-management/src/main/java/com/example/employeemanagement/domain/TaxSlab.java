@@ -25,7 +25,10 @@ public class TaxSlab {
     private BigDecimal lowerBound;
 
     private BigDecimal upperBound;
+
     private BigDecimal rate;
+
+    private BigDecimal fixedAmount;
 
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -91,6 +94,14 @@ public class TaxSlab {
         this.dateLastModified = dateLastModified;
     }
 
+    public BigDecimal getFixedAmount() {
+        return fixedAmount;
+    }
+
+    public void setFixedAmount(BigDecimal fixedAmount) {
+        this.fixedAmount = fixedAmount;
+    }
+
     @PrePersist
     private void init(){
         dateCreated = LocalDateTime.now();
@@ -111,6 +122,7 @@ public class TaxSlab {
                 ", lowerBound=" + lowerBound +
                 ", upperBound=" + upperBound +
                 ", rate=" + rate +
+                ", fixedAmount=" + fixedAmount +
                 ", status=" + status +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +

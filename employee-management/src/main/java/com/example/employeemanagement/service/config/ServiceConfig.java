@@ -40,15 +40,15 @@ public class ServiceConfig {
     EmployeeAllowanceProcessor employeeAllowanceProcessor(EmployeeAllowanceService employeeAllowanceService) {
         return new EmployeeAllowanceProcessorImpl(employeeAllowanceService);
     }
-//    @Bean
-//    SalaryStructureProcessor salaryStructureProcessor(SalaryStructureService salaryStructureService) {
-//        return new SalaryStructureProcessorImpl(salaryStructureService);
-//    }
-//
-//    @Bean
-//    PayrollProcessor payrollProcessor(PayrollService payrollService) {
-//        return new PayslipProcessorImpl(payrollService);
-//    }
+    @Bean
+    SalaryStructureProcessor salaryStructureProcessor(SalaryStructureService salaryStructureService) {
+        return new SalaryStructureProcessorImpl(salaryStructureService);
+    }
+
+    @Bean
+    PayrollProcessor payrollProcessor(PayrollService payrollService) {
+        return new PayrollProcessorImpl(payrollService);
+    }
 //
 //    @Bean
 //    PayslipProcessor payslipProcessor(PayslipService payslipService) {

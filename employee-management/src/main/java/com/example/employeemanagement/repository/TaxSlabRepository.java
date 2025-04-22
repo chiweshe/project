@@ -18,4 +18,6 @@ public interface TaxSlabRepository extends JpaRepository<TaxSlab, Long>, JpaSpec
     Page<TaxSlab> findAllByStatusNot(Status status, Pageable pageable);
     Optional<TaxSlab>findByLowerBoundAndUpperBoundAndRateAndStatusNot(BigDecimal lowerBound, BigDecimal upperBound,
                                                                       BigDecimal rate, Status status);
+
+    Optional<TaxSlab> findFirstByLowerBoundLessThanEqualAndUpperBoundGreaterThanEqual(BigDecimal LowerBound, BigDecimal UpperBound);
 }

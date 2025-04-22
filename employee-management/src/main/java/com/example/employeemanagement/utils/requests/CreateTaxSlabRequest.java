@@ -7,6 +7,7 @@ public class CreateTaxSlabRequest {
     private BigDecimal lowerBound;
     private BigDecimal upperBound;
     private BigDecimal rate;
+    private BigDecimal fixedAmount;
 
     public BigDecimal getLowerBound() {
         return lowerBound;
@@ -32,12 +33,21 @@ public class CreateTaxSlabRequest {
         this.rate = rate;
     }
 
+    public BigDecimal getFixedAmount() {
+        return fixedAmount;
+    }
+
+    public void setFixedAmount(BigDecimal fixedAmount) {
+        this.fixedAmount = fixedAmount;
+    }
+
     @Override
     public String toString() {
         return "CreateTaxSlabRequest{" +
                 "lowerBound=" + lowerBound +
                 ", upperBound=" + upperBound +
                 ", rate=" + rate +
+                ", fixedAmount=" + fixedAmount +
                 '}';
     }
 }

@@ -10,10 +10,8 @@ public class EmployeeAllowanceDto {
     private Long id;
 
     private Long employeeId;
-    private String employeeName;
 
     private Long allowanceId;
-    private String allowanceName;
 
     private BigDecimal amount;
 
@@ -39,28 +37,12 @@ public class EmployeeAllowanceDto {
         this.employeeId = employeeId;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
     public Long getAllowanceId() {
         return allowanceId;
     }
 
     public void setAllowanceId(Long allowanceId) {
         this.allowanceId = allowanceId;
-    }
-
-    public String getAllowanceName() {
-        return allowanceName;
-    }
-
-    public void setAllowanceName(String allowanceName) {
-        this.allowanceName = allowanceName;
     }
 
     public BigDecimal getAmount() {
@@ -100,9 +82,7 @@ public class EmployeeAllowanceDto {
         return "EmployeeAllowanceDto{" +
                 "id=" + id +
                 ", employeeId=" + employeeId +
-                ", employeeName='" + employeeName + '\'' +
                 ", allowanceId=" + allowanceId +
-                ", allowanceName='" + allowanceName + '\'' +
                 ", amount=" + amount +
                 ", status='" + status + '\'' +
                 ", dateCreated=" + dateCreated +

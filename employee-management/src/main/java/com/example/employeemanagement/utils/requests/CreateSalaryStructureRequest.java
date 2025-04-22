@@ -5,13 +5,11 @@ import java.time.LocalDate;
 
 public class CreateSalaryStructureRequest {
 
-    Long employeeId;
-    BigDecimal basicSalary;
-    BigDecimal bonus;
-    BigDecimal otherAllowances;
-    BigDecimal deductions;
-    LocalDate effectiveFrom;
-    Boolean isActive;
+    private Long employeeId;
+    private BigDecimal basicSalary;
+    private  BigDecimal bonus;
+    private LocalDate effectiveFrom;
+    private Boolean isActive;
 
     public Long getEmployeeId() {
         return employeeId;
@@ -37,22 +35,6 @@ public class CreateSalaryStructureRequest {
         this.bonus = bonus;
     }
 
-    public BigDecimal getOtherAllowances() {
-        return otherAllowances;
-    }
-
-    public void setOtherAllowances(BigDecimal otherAllowances) {
-        this.otherAllowances = otherAllowances;
-    }
-
-    public BigDecimal getDeductions() {
-        return deductions;
-    }
-
-    public void setDeductions(BigDecimal deductions) {
-        this.deductions = deductions;
-    }
-
     public LocalDate getEffectiveFrom() {
         return effectiveFrom;
     }
@@ -75,8 +57,7 @@ public class CreateSalaryStructureRequest {
                 "employeeId=" + employeeId +
                 ", basicSalary=" + basicSalary +
                 ", bonus=" + bonus +
-                ", otherAllowances=" + otherAllowances +
-                ", deductions=" + deductions +
+
                 ", effectiveFrom=" + effectiveFrom +
                 ", isActive=" + isActive +
                 '}';

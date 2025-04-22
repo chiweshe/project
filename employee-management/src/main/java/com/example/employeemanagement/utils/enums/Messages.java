@@ -41,7 +41,12 @@ public enum Messages {
     MESSAGE_ALLOWANCES_NOT_FOUND("messages.message_allowances_not_found"),
     MESSAGE_EMPLOYEE_ALLOWANCE_RETRIEVED_SUCCESSFULLY("messages.message_employee_allowance_retrieved_successfully"),
     MESSAGE_DEDUCTIONS_NOT_FOUND("messages.message_deductions_not_found"),
-    MESSAGE_EMPLOYEE_DEDUCTION_RETRIEVED_SUCCESSFULLY("messages.message_employee_deduction_retrieved_successfully"),;
+    MESSAGE_EMPLOYEE_DEDUCTION_RETRIEVED_SUCCESSFULLY("messages.message_employee_deduction_retrieved_successfully"),
+    EMPLOYEE_SALARY_STRUCTURE_ALREADY_EXISTS("messages.employee_salary_structure_already_exists"),
+    SALARY_STRUCTURE_CREATED_SUCCESSFULLY("messages.salary_structure_created_successfully"),
+    SALARY_STRUCTURES_RETRIEVED_SUCCESSFULLY("messages.salary_structures_retrieved_successfully"),
+    SALARY_STRUCTURE_NOT_FOUND("messages.salary_structure_not_found"),
+    PAYROLL_CREATED_SUCCESSFULLY("messages.payroll_created_successfully"),;
 
     private String code;
 

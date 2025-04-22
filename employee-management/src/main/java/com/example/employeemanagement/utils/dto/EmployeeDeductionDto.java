@@ -11,9 +11,9 @@ public class EmployeeDeductionDto {
     private Long id;
 
     private Long employeeId;
-    private Long deductionId;
 
     private String employeeName;
+
     private String deductionName;
 
     private BigDecimal amount;
@@ -48,22 +48,6 @@ public class EmployeeDeductionDto {
         this.employeeName = employeeName;
     }
 
-    public Long getDeductionId() {
-        return deductionId;
-    }
-
-    public void setDeductionId(Long deductionId) {
-        this.deductionId = deductionId;
-    }
-
-    public String getDeductionName() {
-        return deductionName;
-    }
-
-    public void setDeductionName(String deductionName) {
-        this.deductionName = deductionName;
-    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -96,13 +80,20 @@ public class EmployeeDeductionDto {
         this.dateLastModified = dateLastModified;
     }
 
+    public String getDeductionName() {
+        return deductionName;
+    }
+
+    public void setDeductionName(String deductionName) {
+        this.deductionName = deductionName;
+    }
+
     @Override
     public String toString() {
         return "EmployeeDeductionDto{" +
                 "id=" + id +
                 ", employeeId=" + employeeId +
                 ", employeeName='" + employeeName + '\'' +
-                ", deductionId=" + deductionId +
                 ", deductionName='" + deductionName + '\'' +
                 ", amount=" + amount +
                 ", status='" + status + '\'' +
@@ -110,4 +101,5 @@ public class EmployeeDeductionDto {
                 ", dateLastModified=" + dateLastModified +
                 '}';
     }
+
 }

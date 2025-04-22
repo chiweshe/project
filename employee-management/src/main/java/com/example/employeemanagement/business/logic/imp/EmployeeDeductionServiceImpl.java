@@ -8,6 +8,7 @@ import com.example.employeemanagement.repository.EmployeeDeductionRepository;
 import com.example.employeemanagement.repository.EmployeeRepository;
 import com.example.employeemanagement.utils.dto.EmployeeAllowanceDto;
 import com.example.employeemanagement.utils.dto.EmployeeDeductionDto;
+import com.example.employeemanagement.utils.dto.PayrollDto;
 import com.example.employeemanagement.utils.enums.Messages;
 import com.example.employeemanagement.utils.messages.api.MessageService;
 import com.example.employeemanagement.utils.requests.CreateEmployeeDeductionRequest;
@@ -79,15 +80,19 @@ public class EmployeeDeductionServiceImpl implements EmployeeDeductionService {
     modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     EmployeeDeduction employeeDeductionToBeSaved = modelMapper.map(createEmployeeDeductionRequest, EmployeeDeduction.class);
     employeeDeductionToBeSaved.setDeduction(deductionRetrieved.get());
-    employeeDeductionToBeSaved.setDeductionName(String.valueOf(deductionRetrieved.get()));
+    employeeDeductionToBeSaved.setDeductionName(deductionRetrieved.get().getName());
     employeeDeductionToBeSaved.setEmployee(employeeRetrieved.get());
-    employeeDeductionToBeSaved.setEmployeeName(employeeRetrieved.get().getFirstName() + " " + employeeRetrieved.get().getLastName());
+    employeeDeductionToBeSaved.setEmployeeName(employeeRetrieved.get().getFullName());
 
 
-        EmployeeDeduction employeeDeductionSaved = employeeDeductionRepository.save(employeeDeductionToBeSaved);
+    EmployeeDeduction employeeDeductionSaved = employeeDeductionRepository.save(employeeDeductionToBeSaved);
 
     EmployeeDeductionDto employeeDeductionDtoReturned = modelMapper.map(employeeDeductionSaved, EmployeeDeductionDto.class);
-
+    employeeDeductionDtoReturned.setDeductionName(deductionRetrieved.get().getName());
+//        PayrollDto payrollDto = modelMapper.map(savedPayroll, PayrollDto.class);
+//        payrollDto.setEmployeeId(employee.get().getId());
+//        payrollDto.setEmployeeName(employee.get().getFullName());
+//        payrollDto.setTaxAmount(monthlyTax);
     message = messageService.getMessage(Messages.EMPLOYEE_DEDUCTION_CREATED_SUCCESSFULLY.getCode(), new String[]{}, locale);
         return buildResponse(201, true, message, employeeDeductionDtoReturned, null,
             null);
@@ -117,6 +122,7 @@ public class EmployeeDeductionServiceImpl implements EmployeeDeductionService {
                 locale);
         return buildResponse(200, true, message, null,
                 employeeDeductionDtoListReturned, null);
+
     }
 
 

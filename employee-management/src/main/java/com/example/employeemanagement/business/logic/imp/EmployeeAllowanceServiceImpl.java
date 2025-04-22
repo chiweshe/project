@@ -82,7 +82,7 @@ public class EmployeeAllowanceServiceImpl implements EmployeeAllowanceService {
         employeeAllowanceToBeSaved.setAllowance(allowanceRetrieved.get());
         employeeAllowanceToBeSaved.setAllowanceName(allowanceRetrieved.get().getName());
         employeeAllowanceToBeSaved.setEmployee(employeeRetrieved.get());
-        employeeAllowanceToBeSaved.setEmployeeName(employeeRetrieved.get().getFirstName() + " " + employeeRetrieved.get().getLastName());
+        employeeAllowanceToBeSaved.setEmployeeName(employeeRetrieved.get().getFullName());
 
         EmployeeAllowance employeeAllowanceSaved = employeeAllowanceRepository.save(employeeAllowanceToBeSaved);
         EmployeeAllowanceDto employeeAllowanceDtoReturned = modelMapper.map(employeeAllowanceSaved, EmployeeAllowanceDto.class);
@@ -126,6 +126,8 @@ public class EmployeeAllowanceServiceImpl implements EmployeeAllowanceService {
                 locale);
         return buildResponse(200, true, message, null,
                 employeeAllowanceDtoListReturned, null);
+
+
     }
 
 

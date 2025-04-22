@@ -1,7 +1,18 @@
 package com.example.employeemanagement.domain;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,17 +29,17 @@ public class SalaryStructure {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    private String employeeName;
+
     private BigDecimal basicSalary;
 
     private BigDecimal bonus;
 
-    private BigDecimal otherAllowances;
-
-    private BigDecimal deductions;
-
     private LocalDate effectiveFrom;
 
     Boolean isActive;
+
+
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -69,28 +80,20 @@ public class SalaryStructure {
         this.bonus = bonus;
     }
 
-    public BigDecimal getOtherAllowances() {
-        return otherAllowances;
-    }
-
-    public void setOtherAllowances(BigDecimal otherAllowances) {
-        this.otherAllowances = otherAllowances;
-    }
-
-    public BigDecimal getDeductions() {
-        return deductions;
-    }
-
-    public void setDeductions(BigDecimal deductions) {
-        this.deductions = deductions;
-    }
-
     public LocalDate getEffectiveFrom() {
         return effectiveFrom;
     }
 
     public void setEffectiveFrom(LocalDate effectiveFrom) {
         this.effectiveFrom = effectiveFrom;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public Boolean getActive() {
@@ -144,10 +147,9 @@ public class SalaryStructure {
         return "SalaryStructure{" +
                 "id=" + id +
                 ", employee=" + employee +
+                ", employeeName='" + employeeName + '\'' +
                 ", basicSalary=" + basicSalary +
                 ", bonus=" + bonus +
-                ", otherAllowances=" + otherAllowances +
-                ", deductions=" + deductions +
                 ", effectiveFrom=" + effectiveFrom +
                 ", isActive=" + isActive +
                 ", status=" + status +
