@@ -31,15 +31,15 @@ public class ServiceConfig {
         return new DeductionProcessorImpl(deductionService);
     }
 
-//    @Bean
-//    EmployeeDeductionProcessor employeeDeductionProcessor(EmployeeDeductionService employeeDeductionService) {
-//        return new EmployeeDeductionProcessorImpl(employeeDeductionService);
-//    }
-//
-//    @Bean
-//    EmployeeAllowanceProcessor employeeAllowanceProcessor(EmployeeAllowanceService employeeAllowanceService) {
-//        return new EmployeeAllowanceProcessorImpl(employeeAllowanceService);
-//    }
+    @Bean
+    EmployeeDeductionProcessor employeeDeductionProcessor(EmployeeDeductionService employeeDeductionService) {
+        return new EmployeeDeductionProcessorImpl(employeeDeductionService);
+    }
+
+    @Bean
+    EmployeeAllowanceProcessor employeeAllowanceProcessor(EmployeeAllowanceService employeeAllowanceService) {
+        return new EmployeeAllowanceProcessorImpl(employeeAllowanceService);
+    }
 //    @Bean
 //    SalaryStructureProcessor salaryStructureProcessor(SalaryStructureService salaryStructureService) {
 //        return new SalaryStructureProcessorImpl(salaryStructureService);

@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class CreateEmployeeAllowanceRequest {
 
-    Long employeeId;
-    Long allowanceId;
-    BigDecimal amount;
+    private Long employeeId;
+    private Long allowanceId;
+    private BigDecimal amount;
 
     public Long getEmployeeId() {
         return employeeId;

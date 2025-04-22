@@ -3,6 +3,8 @@ package com.example.employeemanagement.business.config;
 import com.example.employeemanagement.business.validation.api.*;
 import com.example.employeemanagement.business.validation.impl.*;
 import com.example.employeemanagement.repository.config.DataConfig;
+import com.example.employeemanagement.service.processor.api.EmployeeAllowanceProcessor;
+import com.example.employeemanagement.service.processor.impl.EmployeeAllowanceProcessorImpl;
 import com.example.employeemanagement.utils.config.UtilsConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,5 +37,15 @@ public class BusinessConfig {
     @Bean
     public TaxSlabServiceValidator taxSlabServiceValidator() {
         return new TaxSlabServiceValidatorImpl();
+    }
+
+    @Bean
+    public EmployeeAllowanceServiceValidator employeeAllowanceServiceValidator() {
+        return new EmployeeAllowanceServiceValidatorImpl();
+    }
+
+    @Bean
+    public EmployeeDeductionValidator employeeDeductionValidator() {
+        return new EmployeeDeductionValidatorImpl();
     }
 }

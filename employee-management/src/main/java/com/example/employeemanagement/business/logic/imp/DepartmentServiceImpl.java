@@ -72,28 +72,28 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentResponse findDepartmentById(Long id, Locale locale) {
-        Optional<Department> departmentOpt = departmentRepository.findByIdAndStatusNot(id, Status.DELETED);
+        Optional<Department> department = departmentRepository.findByIdAndStatusNot(id, Status.DELETED);
 
-        if (departmentOpt.isEmpty()) {
+        if (department.isEmpty()) {
             String message = messageService.getMessage(Messages.DEPARTMENT_NOT_FOUND.getCode(), new String[]{}, locale);
             return buildResponse(404, false, message, null, null, null);
         }
 
-        DepartmentDto departmentDto = modelMapper.map(departmentOpt.get(), DepartmentDto.class);
+        DepartmentDto departmentDto = modelMapper.map(department.get(), DepartmentDto.class);
         String message = messageService.getMessage(Messages.DEPARTMENT_RETRIEVED_SUCCESSFUL.getCode(), new String[]{}, locale);
         return buildResponse(200, true, message, departmentDto, null, null);
     }
 
     @Override
     public DepartmentResponse deleteDepartmentById(Long id, Locale locale, String username) {
-        Optional<Department> departmentOpt = departmentRepository.findByIdAndStatusNot(id, Status.DELETED);
+        Optional<Department> departmentRetrieved = departmentRepository.findByIdAndStatusNot(id, Status.DELETED);
 
-        if (departmentOpt.isEmpty()) {
+        if (departmentRetrieved.isEmpty()) {
             String message = messageService.getMessage(Messages.DEPARTMENT_NOT_FOUND.getCode(), new String[]{}, locale);
             return buildResponse(404, false, message, null, null, null);
         }
 
-        Department department = departmentOpt.get();
+        Department department = departmentRetrieved.get();
 
         department.setStatus(Status.DELETED);
 

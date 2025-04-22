@@ -38,6 +38,10 @@ public class EmployeeAllowance {
         @Enumerated(value = EnumType.STRING)
         private Status status;
 
+        private String employeeName;
+
+        private String allowanceName;
+
         private LocalDateTime dateCreated;
 
         private LocalDateTime dateLastModified;
@@ -98,6 +102,22 @@ public class EmployeeAllowance {
                 this.dateLastModified = dateLastModified;
         }
 
+        public String getEmployeeName() {
+                return employeeName;
+        }
+
+        public void setEmployeeName(String employeeName) {
+                this.employeeName = employeeName;
+        }
+
+        public String getAllowanceName() {
+                return allowanceName;
+        }
+
+        public void setAllowanceName(String allowanceName) {
+                this.allowanceName = allowanceName;
+        }
+
         @PrePersist
         private void init() {
                 dateCreated = LocalDateTime.now();
@@ -119,6 +139,8 @@ public class EmployeeAllowance {
                         ", allowance=" + allowance +
                         ", amount=" + amount +
                         ", status=" + status +
+                        ", employeeName='" + employeeName + '\'' +
+                        ", allowanceName='" + allowanceName + '\'' +
                         ", dateCreated=" + dateCreated +
                         ", dateLastModified=" + dateLastModified +
                         '}';

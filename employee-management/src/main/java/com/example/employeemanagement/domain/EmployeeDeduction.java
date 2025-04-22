@@ -38,6 +38,10 @@ public class EmployeeDeduction {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
+    private String employeeName;
+
+    private String deductionName;
+
     private LocalDateTime dateCreated;
 
     private LocalDateTime dateLastModified;
@@ -98,15 +102,31 @@ public class EmployeeDeduction {
         this.dateLastModified = dateLastModified;
     }
 
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getDeductionName() {
+        return deductionName;
+    }
+
+    public void setDeductionName(String deductionName) {
+        this.deductionName = deductionName;
+    }
+
     @PrePersist
-    private void init(){
+    private void init() {
         dateCreated = LocalDateTime.now();
         status = Status.ACTIVE;
 
     }
 
     @PreUpdate
-    public void update(){
+    public void update() {
 
         dateLastModified = LocalDateTime.now();
     }
@@ -119,6 +139,8 @@ public class EmployeeDeduction {
                 ", deduction=" + deduction +
                 ", amount=" + amount +
                 ", status=" + status +
+                ", employeeName='" + employeeName + '\'' +
+                ", deductionName='" + deductionName + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +
                 '}';

@@ -35,7 +35,13 @@ public enum Messages {
     TAX_SLAB_LIST_PAGED("messages.tax_slab_list_paged"),
     TAX_SLAB_DELETED_SUCCESSFULLY("messages.tax_slab_deleted_successfully"),
     TAX_SLAB_ALREADY_EXISTS("messages.tax_slab_already_exists"),
-    TAX_SLAB_CREATED_SUCCESSFULLY("messages.tax_slab_created_successfully"),;
+    TAX_SLAB_CREATED_SUCCESSFULLY("messages.tax_slab_created_successfully"),
+    EMPLOYEE_DEDUCTION_CREATED_SUCCESSFULLY("messages.employee_deduction_created_successfully"),
+    EMPLOYEE_ALLOWANCE_NOT_FOUND("messages.employee_allowance_not_found"),
+    MESSAGE_ALLOWANCES_NOT_FOUND("messages.message_allowances_not_found"),
+    MESSAGE_EMPLOYEE_ALLOWANCE_RETRIEVED_SUCCESSFULLY("messages.message_employee_allowance_retrieved_successfully"),
+    MESSAGE_DEDUCTIONS_NOT_FOUND("messages.message_deductions_not_found"),
+    MESSAGE_EMPLOYEE_DEDUCTION_RETRIEVED_SUCCESSFULLY("messages.message_employee_deduction_retrieved_successfully"),;
 
     private String code;
 

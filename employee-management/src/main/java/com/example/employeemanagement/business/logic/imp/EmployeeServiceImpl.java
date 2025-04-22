@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse create(CreateEmployeeRequest createEmployeeRequest, Locale locale, String username) {
-        EmployeeResponse employeeResponse = new EmployeeResponse();
+
         String message = "";
 
         boolean isRequestValid = employeeServiceValidator.isRequestValid(createEmployeeRequest);
