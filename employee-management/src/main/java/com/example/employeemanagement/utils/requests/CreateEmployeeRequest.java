@@ -1,6 +1,5 @@
 package com.example.employeemanagement.utils.requests;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CreateEmployeeRequest {
@@ -15,7 +14,6 @@ public class CreateEmployeeRequest {
     private LocalDate hireDate;
     private String jobTitle;
     private String employmentType;
-    private BigDecimal salary;
     private String workLocation;
     private Long departmentId;
 
@@ -99,14 +97,6 @@ public class CreateEmployeeRequest {
         this.employmentType = employmentType;
     }
 
-    public BigDecimal getSalary() {
-        return salary;
-    }
-
-    public void setSalary(BigDecimal salary) {
-        this.salary = salary;
-    }
-
     public String getWorkLocation() {
         return workLocation;
     }
@@ -136,7 +126,6 @@ public class CreateEmployeeRequest {
                 ", hireDate=" + hireDate +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", employmentType='" + employmentType + '\'' +
-                ", salary=" + salary +
                 ", workLocation='" + workLocation + '\'' +
                 ", departmentId=" + departmentId +
                 '}';

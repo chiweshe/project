@@ -7,6 +7,7 @@ import com.example.employeemanagement.utils.responses.PayrollResponse;
 import com.example.employeemanagement.utils.responses.SalaryStructureResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Locale;
 
@@ -29,4 +30,12 @@ public class PayrollProcessorImpl implements PayrollProcessor {
 
         return payrollResponse;
     }
+
+    @Override
+    public PayrollResponse findAllAsPage(Pageable pageable, Locale locale) {
+        logger.info("Incoming request to fetch paginated payroll details..... - Page: {}, Size: {}",pageable, locale);
+        return payrollService.findAllAsPage(pageable, locale);
+    }
+
 }
+

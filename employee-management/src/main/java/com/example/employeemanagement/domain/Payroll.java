@@ -29,6 +29,10 @@ public class Payroll {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    private String employeeName;
+
+    private String employeeCode;
+
     private YearMonth payrollMonth;
 
     private BigDecimal basicSalary;
@@ -46,6 +50,14 @@ public class Payroll {
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
+    }
 
     private LocalDateTime dateCreated;
 
@@ -147,6 +159,15 @@ public class Payroll {
         this.dateLastModified = dateLastModified;
     }
 
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+
     @PrePersist
     private void init(){
         dateCreated = LocalDateTime.now();
@@ -165,6 +186,8 @@ public class Payroll {
         return "Payroll{" +
                 "id=" + id +
                 ", employee=" + employee +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeCode='" + employeeCode + '\'' +
                 ", payrollMonth=" + payrollMonth +
                 ", basicSalary=" + basicSalary +
                 ", totalAllowances=" + totalAllowances +

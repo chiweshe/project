@@ -15,6 +15,7 @@ import com.example.employeemanagement.utils.messages.api.MessageService;
 import com.example.employeemanagement.utils.requests.CreateEmployeeAllowanceRequest;
 import com.example.employeemanagement.utils.responses.EmployeeAllowanceResponse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
@@ -80,9 +81,7 @@ public class EmployeeAllowanceServiceImpl implements EmployeeAllowanceService {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         EmployeeAllowance employeeAllowanceToBeSaved = modelMapper.map(createEmployeeAllowanceRequest, EmployeeAllowance.class);
         employeeAllowanceToBeSaved.setAllowance(allowanceRetrieved.get());
-        employeeAllowanceToBeSaved.setAllowanceName(allowanceRetrieved.get().getName());
         employeeAllowanceToBeSaved.setEmployee(employeeRetrieved.get());
-        employeeAllowanceToBeSaved.setEmployeeName(employeeRetrieved.get().getFullName());
 
         EmployeeAllowance employeeAllowanceSaved = employeeAllowanceRepository.save(employeeAllowanceToBeSaved);
         EmployeeAllowanceDto employeeAllowanceDtoReturned = modelMapper.map(employeeAllowanceSaved, EmployeeAllowanceDto.class);

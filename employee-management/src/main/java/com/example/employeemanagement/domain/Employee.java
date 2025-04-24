@@ -2,19 +2,8 @@ package com.example.employeemanagement.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,15 +25,14 @@ public class Employee {
     private LocalDate hireDate;
     private String jobTitle;
     private String employmentType;
-    private BigDecimal salary;
     private String workLocation;
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "department_id", referencedColumnName = "id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
     private LocalDateTime dateCreated;
@@ -138,14 +126,6 @@ public class Employee {
         this.employmentType = employmentType;
     }
 
-    public BigDecimal getSalary() {
-        return salary;
-    }
-
-    public void setSalary(BigDecimal salary) {
-        this.salary = salary;
-    }
-
     public String getWorkLocation() {
         return workLocation;
     }
@@ -213,7 +193,6 @@ public class Employee {
                 ", hireDate=" + hireDate +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", employmentType='" + employmentType + '\'' +
-                ", salary=" + salary +
                 ", workLocation='" + workLocation + '\'' +
                 ", status=" + status +
                 ", department=" + department +

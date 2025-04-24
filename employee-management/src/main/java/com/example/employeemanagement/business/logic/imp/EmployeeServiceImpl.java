@@ -57,8 +57,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         }
 
-        Optional<Employee> employeeRetrieved = employeeRepository.findByEmployeeCodeAndStatusNot(createEmployeeRequest.getEmployeeCode(),
-                Status.DELETED);
+        Optional<Employee> employeeRetrieved = employeeRepository.findByEmployeeCodeAndEmailAndPhone(createEmployeeRequest.getEmployeeCode(),
+                createEmployeeRequest.getEmail(), createEmployeeRequest.getPhone()
+                );
         if (employeeRetrieved.isPresent()) {
             message = messageService.getMessage(Messages.EMPLOYEE_ALREADY_EXISTS.getCode(), new String[]{},
                     locale);
@@ -76,8 +77,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Employee employeeToBeSaved = modelMapper.map(createEmployeeRequest, Employee.class);
+        employeeToBeSaved.setFullName(createEmployeeRequest.getFirstName() + " " + createEmployeeRequest.getLastName());
         employeeToBeSaved.setDepartment(department.get());
-
         Employee employeeSaved = employeeRepository.save(employeeToBeSaved);
         EmployeeDto employeeDtoReturned = modelMapper.map(employeeSaved, EmployeeDto.class);
 

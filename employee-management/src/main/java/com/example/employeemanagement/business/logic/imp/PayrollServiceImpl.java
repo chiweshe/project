@@ -3,6 +3,7 @@ package com.example.employeemanagement.business.logic.imp;
 import com.example.employeemanagement.business.logic.api.PayrollService;
 import com.example.employeemanagement.domain.*;
 import com.example.employeemanagement.repository.*;
+import com.example.employeemanagement.utils.dto.EmployeeDto;
 import com.example.employeemanagement.utils.dto.PayrollDto;
 import com.example.employeemanagement.utils.enums.Messages;
 import com.example.employeemanagement.utils.messages.api.MessageService;
@@ -10,6 +11,7 @@ import com.example.employeemanagement.utils.requests.CreatePayrollRequest;
 import com.example.employeemanagement.utils.responses.PayrollResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -115,6 +117,8 @@ public class PayrollServiceImpl  implements PayrollService {
 
             Payroll payroll = new Payroll();
             payroll.setEmployee(employee.get());
+            payroll.setEmployeeName(employee.get().getFullName());
+            payroll.setEmployeeCode(employee.get().getEmployeeCode());
             payroll.setPayrollMonth(createPayrollRequest.getPayrollMonth());
             payroll.setBasicSalary(basicSalary);
             payroll.setTotalAllowances(totalAllowances);
@@ -122,6 +126,7 @@ public class PayrollServiceImpl  implements PayrollService {
             payroll.setGrossPay(grossPay);
             payroll.setNetPay(netPay);
             payroll.setGeneratedAt(LocalDateTime.now());
+            payroll.setEmployeeName(payroll.getEmployeeName());
             payroll.setStatus(Status.ACTIVE);
 
             Payroll savedPayroll = payrollRepository.save(payroll);
@@ -135,6 +140,47 @@ public class PayrollServiceImpl  implements PayrollService {
 
             return buildResponse(201, true, message, payrollDto, null, null);
         }
+
+    @Override
+    public PayrollResponse findAllAsPage(Pageable pageable, Locale locale) {
+        Page<Payroll> payrollPage = payrollRepository.findAllByStatusNot(Status.DELETED, pageable);
+
+        Page<PayrollDto> payrollDtoPage = payrollPage.map(payroll -> {
+            PayrollDto dto = modelMapper.map(payroll, PayrollDto.class);
+
+            // Assuming Payroll has a getEmployee() method returning an Employee object
+            if (payroll.getEmployee() != null) {
+                dto.setEmployeeId(payroll.getEmployee().getId());
+                dto.setEmployeeName(payroll.getEmployee().getFullName());
+            }
+
+            return dto;
+        });
+
+        String message = messageService.getMessage(Messages.PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY.getCode(), new String[]{}, locale);
+        return buildResponse(200, true, message, null, null, payrollDtoPage);
+    }
+
+//
+//    @Override
+//    public PayrollResponse findAllAsPage(Pageable pageable, Locale locale) {
+//
+//        Page<Payroll> payrollPage = payrollRepository.findAllByStatusNot(Status.DELETED, pageable);
+//
+//        Page<PayrollDto> payrollDtoPage = payrollPage.map(payroll -> modelMapper.map(payroll, PayrollDto.class));
+//
+//        // Assuming Payroll has a getEmployee() method returning an Employee object
+//        if (payroll.getEmployee() != null) {
+//            dto.setEmployeeId(payroll.getEmployee().getId());
+//            dto.setEmployeeName(payroll.getEmployee().getFullName());
+//        }
+//
+//        return dto;
+//    });
+//
+//        String message = messageService.getMessage(Messages.PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY.getCode(), new String[]{}, locale);
+//        return buildResponse(200, true, message, null, null, payrollDtoPage);
+//    }
 
 
     public PayrollResponse buildResponse(int statusCode, Boolean success, String message,

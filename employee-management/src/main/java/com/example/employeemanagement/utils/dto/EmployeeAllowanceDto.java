@@ -13,6 +13,10 @@ public class EmployeeAllowanceDto {
 
     private Long allowanceId;
 
+    private String employeeName;
+
+    private String allowanceName;
+
     private BigDecimal amount;
 
     private String status;
@@ -77,12 +81,30 @@ public class EmployeeAllowanceDto {
         this.dateLastModified = dateLastModified;
     }
 
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getAllowanceName() {
+        return allowanceName;
+    }
+
+    public void setAllowanceName(String allowanceName) {
+        this.allowanceName = allowanceName;
+    }
+
     @Override
     public String toString() {
         return "EmployeeAllowanceDto{" +
                 "id=" + id +
                 ", employeeId=" + employeeId +
                 ", allowanceId=" + allowanceId +
+                ", employeeName='" + employeeName + '\'' +
+                ", allowanceName='" + allowanceName + '\'' +
                 ", amount=" + amount +
                 ", status='" + status + '\'' +
                 ", dateCreated=" + dateCreated +

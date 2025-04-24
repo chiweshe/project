@@ -9,9 +9,10 @@ import java.time.LocalDate;
 public class EmployeeDto {
 
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String middleName;
+//    private String firstName;
+//    private String lastName;
+//    private String middleName;
+    private String fullName;
     private String gender;
     private LocalDate birthDate;
     private String email;
@@ -34,28 +35,37 @@ public class EmployeeDto {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public String getMiddleName() {
+//        return middleName;
+//    }
+//
+//    public void setMiddleName(String middleName) {
+//        this.middleName = middleName;
+//    }
+
+
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getGender() {
@@ -166,9 +176,7 @@ public class EmployeeDto {
     public String toString() {
         return "EmployeeDto{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", middleName='" + middleName + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", birthDate=" + birthDate +
                 ", email='" + email + '\'' +
