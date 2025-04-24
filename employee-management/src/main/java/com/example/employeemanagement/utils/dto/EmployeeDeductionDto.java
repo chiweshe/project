@@ -1,5 +1,6 @@
 package com.example.employeemanagement.utils.dto;
 
+import com.example.employeemanagement.domain.Deduction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.math.BigDecimal;
@@ -64,6 +65,14 @@ public class EmployeeDeductionDto {
         this.status = status;
     }
 
+    public String getDeductionName() {
+        return deductionName;
+    }
+
+    public void setDeductionName(String deductionName) {
+        this.deductionName = deductionName;
+    }
+
     public LocalDateTime getDateCreated() {
         return dateCreated;
     }
@@ -80,14 +89,6 @@ public class EmployeeDeductionDto {
         this.dateLastModified = dateLastModified;
     }
 
-    public String getDeductionName() {
-        return deductionName;
-    }
-
-    public void setDeductionName(String deductionName) {
-        this.deductionName = deductionName;
-    }
-
     @Override
     public String toString() {
         return "EmployeeDeductionDto{" +
@@ -101,5 +102,4 @@ public class EmployeeDeductionDto {
                 ", dateLastModified=" + dateLastModified +
                 '}';
     }
-
 }
