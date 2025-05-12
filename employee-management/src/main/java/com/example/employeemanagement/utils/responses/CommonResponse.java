@@ -44,6 +44,7 @@ public class CommonResponse {
         this.success = success;
     }
 
+
     public String getMessage() {
         return message;
     }

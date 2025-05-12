@@ -22,4 +22,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
     Optional<Employee> findByEmployeeCode(String employeeCode);
 
     Optional<Employee> findByEmployeeCodeAndEmailAndPhone(String employeeCode, String email, String phone);
+
+    List<Employee> findAllByStatusNot(Status status);
 }

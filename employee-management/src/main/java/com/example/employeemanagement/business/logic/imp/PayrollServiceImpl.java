@@ -17,6 +17,7 @@ import com.example.employeemanagement.repository.TaxSlabRepository;
 import com.example.employeemanagement.utils.dto.PayrollDto;
 import com.example.employeemanagement.utils.enums.Messages;
 import com.example.employeemanagement.utils.messages.api.MessageService;
+import com.example.employeemanagement.utils.requests.CreateBulkPayrollRequest;
 import com.example.employeemanagement.utils.requests.CreatePayrollRequest;
 import com.example.employeemanagement.utils.responses.PayrollResponse;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -81,7 +83,6 @@ public class PayrollServiceImpl  implements PayrollService {
 
         Employee employee = employeeOpt.get();
 
-        // Check for existing payroll to avoid duplication
         Optional<Payroll> existingPayroll = payrollRepository.findByEmployeeIdAndPayrollMonth(
                 employee.getId(), createPayrollRequest.getPayrollMonth());
         if (existingPayroll.isPresent()) {
@@ -164,6 +165,39 @@ public class PayrollServiceImpl  implements PayrollService {
 
         String message = messageService.getMessage(Messages.PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY.getCode(), new String[]{}, locale);
         return buildResponse(200, true, message, null, null, payrollDtoPage);
+    }
+
+    @Override
+    public PayrollResponse createBulkPayroll(CreateBulkPayrollRequest createBulkPayrollRequest, Locale locale, String username)
+    {
+        String message;
+        List<PayrollDto> processedPayrolls = new ArrayList<>();
+        List<String> failedEmployees = new ArrayList<>();
+
+        List<Employee> employees = employeeRepository.findAllByStatusNot(Status.DELETED);
+
+        for (Employee employee : employees) {
+            CreatePayrollRequest request = new CreatePayrollRequest();
+            request.setEmployeeId(employee.getId());
+            request.setPayrollMonth(createBulkPayrollRequest.getPayrollMonth());
+
+            PayrollResponse payrollResponse = createPayroll(request, locale, username);
+
+            if (payrollResponse.isSuccess() && payrollResponse.getPayrollDto() != null) {
+                processedPayrolls.add(payrollResponse.getPayrollDto());
+            } else {
+                failedEmployees.add(employee.getFullName() + " (Employee Code: " + employee.getEmployeeCode() + ")");
+            }
+        }
+
+        if (!failedEmployees.isEmpty()) {
+            message = messageService.getMessage(Messages.BULK_PAYROLL_PARTIAL_SUCCESS.getCode(), new String[]{}, locale)
+                    + " Failed for: " + String.join(", ", failedEmployees);
+            return buildResponse(200, true, message, null, processedPayrolls, null); // 207 Multi-Status
+        }
+
+        message = messageService.getMessage(Messages.BULK_PAYROLL_SUCCESS.getCode(), new String[]{}, locale);
+        return buildResponse(200, true, message, null, processedPayrolls, null);
     }
 
     public PayrollResponse buildResponse(int statusCode, Boolean success, String message,

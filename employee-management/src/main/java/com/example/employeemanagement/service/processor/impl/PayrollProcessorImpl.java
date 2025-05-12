@@ -2,13 +2,13 @@ package com.example.employeemanagement.service.processor.impl;
 
 import com.example.employeemanagement.business.logic.api.PayrollService;
 import com.example.employeemanagement.service.processor.api.PayrollProcessor;
+import com.example.employeemanagement.utils.requests.CreateBulkPayrollRequest;
 import com.example.employeemanagement.utils.requests.CreatePayrollRequest;
 import com.example.employeemanagement.utils.responses.PayrollResponse;
-import com.example.employeemanagement.utils.responses.SalaryStructureResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
-
+import java.time.YearMonth;
 import java.util.Locale;
 
 public class PayrollProcessorImpl implements PayrollProcessor {
@@ -35,6 +35,13 @@ public class PayrollProcessorImpl implements PayrollProcessor {
     public PayrollResponse findAllAsPage(Pageable pageable, Locale locale) {
         logger.info("Incoming request to fetch paginated payroll details..... - Page: {}, Size: {}",pageable, locale);
         return payrollService.findAllAsPage(pageable, locale);
+    }
+
+    @Override
+    public PayrollResponse createBulkPayroll(CreateBulkPayrollRequest createBulkPayrollRequest, Locale locale, String username) {
+        logger.info("Incoming request to run bulk payroll....");
+        PayrollResponse payrollResponse = payrollService.createBulkPayroll(createBulkPayrollRequest, locale, username);
+        return payrollResponse;
     }
 
 }

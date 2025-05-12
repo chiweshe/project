@@ -2,8 +2,8 @@ package com.example.employeemanagement.service.controller.frontend;
 
 import com.example.employeemanagement.service.processor.api.PayrollProcessor;
 import com.example.employeemanagement.utils.constants.Constants;
+import com.example.employeemanagement.utils.requests.CreateBulkPayrollRequest;
 import com.example.employeemanagement.utils.requests.CreatePayrollRequest;
-import com.example.employeemanagement.utils.responses.EmployeeResponse;
 import com.example.employeemanagement.utils.responses.PayrollResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,7 +11,14 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
@@ -46,5 +53,17 @@ public class PayrollResource {
             @RequestHeader(value = Constants.LOCALE_LANGUAGE, defaultValue = Constants.DEFAULT_LOCALE) Locale locale) {
         Pageable pageable = PageRequest.of(page, size);
         return payrollProcessor.findAllAsPage(pageable, locale);
+    }
+
+    @Operation(summary = "Run bulk payroll for all employees")
+    @PostMapping("/bulk")
+    public PayrollResponse runBulkPayroll(@Valid @RequestBody final CreateBulkPayrollRequest createBulkPayrollRequest,
+                                          @Parameter(name = "Authorization", in = ParameterIn.HEADER,
+                                                  description = "Bearer token", required = true)
+                                          String authenticationToken,
+                                          @Parameter(description = Constants.LOCALE_LANGUAGE_NARRATIVE)
+                                          @RequestHeader(value = Constants.LOCALE_LANGUAGE,
+                                                  defaultValue = Constants.DEFAULT_LOCALE) final Locale locale) {
+        return payrollProcessor.createBulkPayroll(createBulkPayrollRequest, locale, authenticationToken);
     }
 }

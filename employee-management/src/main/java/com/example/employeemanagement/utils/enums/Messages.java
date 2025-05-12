@@ -48,7 +48,9 @@ public enum Messages {
     SALARY_STRUCTURE_NOT_FOUND("messages.salary_structure_not_found"),
     PAYROLL_CREATED_SUCCESSFULLY("messages.payroll_created_successfully"),
     PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY("messages.payroll_details_retrieved_successfully"),
-    PAYROLL_ALREADY_EXISTS("messages.payroll_already_exists"),;
+    PAYROLL_ALREADY_EXISTS("messages.payroll_already_exists"),
+    BULK_PAYROLL_PARTIAL_SUCCESS("messages.bulk_payroll_partial_successfully"),
+    BULK_PAYROLL_SUCCESS("messages.bulk_payroll_successfully"),;
 
     private String code;
 
