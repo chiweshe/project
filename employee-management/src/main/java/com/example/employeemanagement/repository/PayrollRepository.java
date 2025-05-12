@@ -7,8 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.time.YearMonth;
+import java.util.Optional;
+
 public interface PayrollRepository extends JpaRepository<Payroll, Long>,
         JpaSpecificationExecutor<Payroll> {
 
     Page<Payroll> findAllByStatusNot(Status status, Pageable pageable);
+
+    Optional<Payroll> findByEmployeeIdAndPayrollMonth(Long id, YearMonth payrollMonth);
 }

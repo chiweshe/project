@@ -1,9 +1,19 @@
 package com.example.employeemanagement.business.logic.imp;
 
 import com.example.employeemanagement.business.logic.api.PayrollService;
-import com.example.employeemanagement.domain.*;
-import com.example.employeemanagement.repository.*;
-import com.example.employeemanagement.utils.dto.EmployeeDto;
+import com.example.employeemanagement.domain.Employee;
+import com.example.employeemanagement.domain.EmployeeAllowance;
+import com.example.employeemanagement.domain.EmployeeDeduction;
+import com.example.employeemanagement.domain.Payroll;
+import com.example.employeemanagement.domain.SalaryStructure;
+import com.example.employeemanagement.domain.Status;
+import com.example.employeemanagement.domain.TaxSlab;
+import com.example.employeemanagement.repository.EmployeeAllowanceRepository;
+import com.example.employeemanagement.repository.EmployeeDeductionRepository;
+import com.example.employeemanagement.repository.EmployeeRepository;
+import com.example.employeemanagement.repository.PayrollRepository;
+import com.example.employeemanagement.repository.SalaryStructureRepository;
+import com.example.employeemanagement.repository.TaxSlabRepository;
 import com.example.employeemanagement.utils.dto.PayrollDto;
 import com.example.employeemanagement.utils.enums.Messages;
 import com.example.employeemanagement.utils.messages.api.MessageService;
@@ -54,92 +64,88 @@ public class PayrollServiceImpl  implements PayrollService {
         this.modelMapper = modelMapper;
     }
 
+    private static final int SCALE = 2;
+    private static final RoundingMode ROUNDING = RoundingMode.HALF_UP;
+
     @Override
     public PayrollResponse createPayroll(CreatePayrollRequest createPayrollRequest, Locale locale, String username) {
-            String message = "";
+        String message;
 
-            Optional<Employee> employee = employeeRepository.findByIdAndStatusNot(createPayrollRequest.getEmployeeId(),
-                    Status.DELETED);
+        Optional<Employee> employeeOpt = employeeRepository.findByIdAndStatusNot(
+                createPayrollRequest.getEmployeeId(), Status.DELETED);
 
-            if (employee.isEmpty()) {
-                message = messageService.getMessage(Messages.EMPLOYEE_NOT_FOUND.getCode(), new String[]{}, locale);
-                return buildResponse(404, false, message, null, null, null);
-            }
+        if (employeeOpt.isEmpty()) {
+            message = messageService.getMessage(Messages.EMPLOYEE_NOT_FOUND.getCode(), new String[]{}, locale);
+            return buildResponse(404, false, message, null, null, null);
+        }
 
-            SalaryStructure salaryStructure = salaryStructureRepository.findTopByEmployeeIdAndIsActiveTrueAndStatus(createPayrollRequest.getEmployeeId(),
-                    Status.ACTIVE);
+        Employee employee = employeeOpt.get();
 
-            if (salaryStructure == null) {
-                message = messageService.getMessage(Messages.SALARY_STRUCTURE_NOT_FOUND.getCode(), new String[]{}, locale);
-                return buildResponse(404, false, message, null, null, null);
-            }
+        // Check for existing payroll to avoid duplication
+        Optional<Payroll> existingPayroll = payrollRepository.findByEmployeeIdAndPayrollMonth(
+                employee.getId(), createPayrollRequest.getPayrollMonth());
+        if (existingPayroll.isPresent()) {
+            message = messageService.getMessage(Messages.PAYROLL_ALREADY_EXISTS.getCode(), new String[]{}, locale);
+            return buildResponse(409, false, message, null, null, null);
+        }
 
-            List<EmployeeAllowance> allowances = employeeAllowanceRepository.findByEmployeeIdAndStatusNot(
-                    createPayrollRequest.getEmployeeId(), Status.DELETED);
-            List<EmployeeDeduction> deductions = employeeDeductionRepository.findByEmployeeIdAndStatusNot(
-                    createPayrollRequest.getEmployeeId(), Status.DELETED);
+        SalaryStructure salaryStructure = salaryStructureRepository
+                .findTopByEmployeeIdAndIsActiveTrueAndStatus(employee.getId(), Status.ACTIVE);
 
-            BigDecimal totalAllowances = allowances.stream()
-                    .map(EmployeeAllowance::getAmount)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (salaryStructure == null) {
+            message = messageService.getMessage(Messages.SALARY_STRUCTURE_NOT_FOUND.getCode(), new String[]{}, locale);
+            return buildResponse(404, false, message, null, null, null);
+        }
 
-            if (salaryStructure.getBonus() != null) {
-                totalAllowances = totalAllowances.add(salaryStructure.getBonus());
-            }
+        List<EmployeeAllowance> allowances = employeeAllowanceRepository.findByEmployeeIdAndStatusNot(
+                employee.getId(), Status.DELETED);
 
-            BigDecimal basicSalary = salaryStructure.getBasicSalary();
-            BigDecimal grossPay = basicSalary.add(totalAllowances);
+        List<EmployeeDeduction> deductions = employeeDeductionRepository.findByEmployeeIdAndStatusNot(
+                employee.getId(), Status.DELETED);
 
-            BigDecimal otherDeductions = deductions.stream()
-                    .map(EmployeeDeduction::getAmount)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalAllowances = allowances.stream()
+                .map(EmployeeAllowance::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .add(Optional.ofNullable(salaryStructure.getBonus()).orElse(BigDecimal.ZERO));
 
-            BigDecimal monthlyTax = BigDecimal.ZERO;
+        BigDecimal basicSalary = salaryStructure.getBasicSalary();
+        BigDecimal grossPay = basicSalary.add(totalAllowances);
+
+        BigDecimal otherDeductions = deductions.stream()
+                .map(EmployeeDeduction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         TaxSlab taxSlab = taxSlabRepository
                 .findFirstByLowerBoundLessThanEqualAndUpperBoundGreaterThanEqual(grossPay, grossPay)
                 .orElse(null);
 
-            if (taxSlab != null && taxSlab.getRate() != null) {
-                BigDecimal fixedNonTaxable = taxSlab.getFixedAmount() != null ? taxSlab.getFixedAmount() : BigDecimal.ZERO;
+        BigDecimal monthlyTax = calculateTax(grossPay, taxSlab);
+        BigDecimal totalDeductions = otherDeductions.add(monthlyTax);
+        BigDecimal netPay = grossPay.subtract(totalDeductions);
 
-                BigDecimal amountToBeTaxed = grossPay.subtract(fixedNonTaxable);
-                if (amountToBeTaxed.compareTo(BigDecimal.ZERO) < 0) {
-                    amountToBeTaxed = BigDecimal.ZERO;
-                }
+        Payroll payroll = new Payroll();
+        payroll.setEmployee(employee);
+        payroll.setEmployeeName(employee.getFullName());
+        payroll.setEmployeeCode(employee.getEmployeeCode());
+        payroll.setPayrollMonth(createPayrollRequest.getPayrollMonth());
+        payroll.setBasicSalary(basicSalary);
+        payroll.setTotalAllowances(totalAllowances);
+        payroll.setTotalDeductions(totalDeductions);
+        payroll.setGrossPay(grossPay);
+        payroll.setNetPay(netPay);
+        payroll.setGeneratedAt(LocalDateTime.now());
+        payroll.setStatus(Status.ACTIVE);
 
-                BigDecimal taxRate = taxSlab.getRate().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
-                monthlyTax = amountToBeTaxed.multiply(taxRate).setScale(2, RoundingMode.HALF_UP);
-            }
+        Payroll savedPayroll = payrollRepository.save(payroll);
 
-            BigDecimal totalDeductions = otherDeductions.add(monthlyTax);
-            BigDecimal netPay = grossPay.subtract(totalDeductions);
+        PayrollDto payrollDto = modelMapper.map(savedPayroll, PayrollDto.class);
+        payrollDto.setEmployeeId(employee.getId());
+        payrollDto.setEmployeeName(employee.getFullName());
+        payrollDto.setTaxAmount(monthlyTax);
 
-            Payroll payroll = new Payroll();
-            payroll.setEmployee(employee.get());
-            payroll.setEmployeeName(employee.get().getFullName());
-            payroll.setEmployeeCode(employee.get().getEmployeeCode());
-            payroll.setPayrollMonth(createPayrollRequest.getPayrollMonth());
-            payroll.setBasicSalary(basicSalary);
-            payroll.setTotalAllowances(totalAllowances);
-            payroll.setTotalDeductions(totalDeductions);
-            payroll.setGrossPay(grossPay);
-            payroll.setNetPay(netPay);
-            payroll.setGeneratedAt(LocalDateTime.now());
-            payroll.setEmployeeName(payroll.getEmployeeName());
-            payroll.setStatus(Status.ACTIVE);
-
-            Payroll savedPayroll = payrollRepository.save(payroll);
-
-            PayrollDto payrollDto = modelMapper.map(savedPayroll, PayrollDto.class);
-            payrollDto.setEmployeeId(employee.get().getId());
-            payrollDto.setEmployeeName(employee.get().getFullName());
-            payrollDto.setTaxAmount(monthlyTax);
-
-            message = messageService.getMessage(Messages.PAYROLL_CREATED_SUCCESSFULLY.getCode(), new String[]{}, locale);
-
-            return buildResponse(201, true, message, payrollDto, null, null);
-        }
+        message = messageService.getMessage(Messages.PAYROLL_CREATED_SUCCESSFULLY.getCode(), new String[]{}, locale);
+        return buildResponse(201, true, message, payrollDto, null, null);
+    }
 
     @Override
     public PayrollResponse findAllAsPage(Pageable pageable, Locale locale) {
@@ -148,7 +154,6 @@ public class PayrollServiceImpl  implements PayrollService {
         Page<PayrollDto> payrollDtoPage = payrollPage.map(payroll -> {
             PayrollDto dto = modelMapper.map(payroll, PayrollDto.class);
 
-            // Assuming Payroll has a getEmployee() method returning an Employee object
             if (payroll.getEmployee() != null) {
                 dto.setEmployeeId(payroll.getEmployee().getId());
                 dto.setEmployeeName(payroll.getEmployee().getFullName());
@@ -160,28 +165,6 @@ public class PayrollServiceImpl  implements PayrollService {
         String message = messageService.getMessage(Messages.PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY.getCode(), new String[]{}, locale);
         return buildResponse(200, true, message, null, null, payrollDtoPage);
     }
-
-//
-//    @Override
-//    public PayrollResponse findAllAsPage(Pageable pageable, Locale locale) {
-//
-//        Page<Payroll> payrollPage = payrollRepository.findAllByStatusNot(Status.DELETED, pageable);
-//
-//        Page<PayrollDto> payrollDtoPage = payrollPage.map(payroll -> modelMapper.map(payroll, PayrollDto.class));
-//
-//        // Assuming Payroll has a getEmployee() method returning an Employee object
-//        if (payroll.getEmployee() != null) {
-//            dto.setEmployeeId(payroll.getEmployee().getId());
-//            dto.setEmployeeName(payroll.getEmployee().getFullName());
-//        }
-//
-//        return dto;
-//    });
-//
-//        String message = messageService.getMessage(Messages.PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY.getCode(), new String[]{}, locale);
-//        return buildResponse(200, true, message, null, null, payrollDtoPage);
-//    }
-
 
     public PayrollResponse buildResponse(int statusCode, Boolean success, String message,
                                          PayrollDto payrollDto, List<PayrollDto> payrollDtoList,
@@ -196,5 +179,17 @@ public class PayrollServiceImpl  implements PayrollService {
 
 
         return payrollResponse;
+    }
+
+    private BigDecimal calculateTax(BigDecimal grossPay, TaxSlab taxSlab) {
+        if (taxSlab == null || taxSlab.getRate() == null) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal fixedNonTaxable = Optional.ofNullable(taxSlab.getFixedAmount()).orElse(BigDecimal.ZERO);
+        BigDecimal amountToBeTaxed = grossPay.subtract(fixedNonTaxable).max(BigDecimal.ZERO);
+        BigDecimal taxRate = taxSlab.getRate().divide(BigDecimal.valueOf(100), 4, ROUNDING);
+
+        return amountToBeTaxed.multiply(taxRate).setScale(SCALE, ROUNDING);
     }
 }
