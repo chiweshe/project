@@ -39,6 +39,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentResponse saveDepartment(CreateDepartmentRequest createDepartmentRequest, Locale locale, String username) {
 
+
+
         String message = "";
 
         boolean isRequestValid = departmentServiceValidator.isRequestValid(createDepartmentRequest);
@@ -52,10 +54,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         Optional<Department> departmentRetrieved = departmentRepository.findByNameAndStatusNot(createDepartmentRequest.getName(), Status.DELETED);
         if (departmentRetrieved.isPresent()) {
-            message = messageService.getMessage(Messages.DEPARTMENT_ALREADY_EXISTS.getCode(), new String[]{},
-                    locale);
-            return buildResponse(400, false, message, null, null,
-                    null);
+            message = messageService.getMessage(Messages.DEPARTMENT_ALREADY_EXISTS.getCode(), new String[]{}, locale);
+            return buildResponse(400, false, message, null, null, null);
         }
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

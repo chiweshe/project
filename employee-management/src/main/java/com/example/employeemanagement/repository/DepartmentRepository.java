@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long>, JpaSpecificationExecutor<Department> {
+
     Optional<Department> findByNameAndStatusNot(String name, Status status);
 
     Department save(Department department);
