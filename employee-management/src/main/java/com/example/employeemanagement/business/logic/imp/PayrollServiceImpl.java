@@ -193,7 +193,7 @@ public class PayrollServiceImpl  implements PayrollService {
         if (!failedEmployees.isEmpty()) {
             message = messageService.getMessage(Messages.BULK_PAYROLL_PARTIAL_SUCCESS.getCode(), new String[]{}, locale)
                     + " Failed for: " + String.join(", ", failedEmployees);
-            return buildResponse(200, true, message, null, processedPayrolls, null); // 207 Multi-Status
+            return buildResponse(200, true, message, null, processedPayrolls, null);
         }
 
         message = messageService.getMessage(Messages.BULK_PAYROLL_SUCCESS.getCode(), new String[]{}, locale);
