@@ -10,6 +10,7 @@ public class TaxSlabDto {
     private BigDecimal lowerBound;
     private BigDecimal upperBound;
     private BigDecimal rate;
+    private BigDecimal fixedAmount;
     private Status status;
     private LocalDateTime dateCreated;
     private LocalDateTime dateLastModified;
@@ -70,6 +71,14 @@ public class TaxSlabDto {
         this.dateLastModified = dateLastModified;
     }
 
+    public BigDecimal getFixedAmount() {
+        return fixedAmount;
+    }
+
+    public void setFixedAmount(BigDecimal fixedAmount) {
+        this.fixedAmount = fixedAmount;
+    }
+
     @Override
     public String toString() {
         return "TaxSlabDto{" +
@@ -77,6 +86,7 @@ public class TaxSlabDto {
                 ", lowerBound=" + lowerBound +
                 ", upperBound=" + upperBound +
                 ", rate=" + rate +
+                ", fixedAmount=" + fixedAmount +
                 ", status=" + status +
                 ", dateCreated=" + dateCreated +
                 ", dateLastModified=" + dateLastModified +
