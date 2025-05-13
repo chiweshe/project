@@ -12,4 +12,6 @@ public interface EmployeeAllowanceRepository extends JpaRepository<EmployeeAllow
     Optional<EmployeeAllowance> findByIdAndStatusNot(Long id, Status status);
 
     List<EmployeeAllowance> findByEmployeeIdAndStatusNot(Long employeeId, Status status);
+
+    Optional<EmployeeAllowance> findByEmployeeIdAndAllowanceIdAndStatusNot(Long employeeId, Long allowanceId, Status status);
 }

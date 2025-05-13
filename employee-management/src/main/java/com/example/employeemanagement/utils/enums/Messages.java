@@ -50,7 +50,10 @@ public enum Messages {
     PAYROLL_DETAILS_RETRIEVED_SUCCESSFULLY("messages.payroll_details_retrieved_successfully"),
     PAYROLL_ALREADY_EXISTS("messages.payroll_already_exists"),
     BULK_PAYROLL_PARTIAL_SUCCESS("messages.bulk_payroll_partial_successfully"),
-    BULK_PAYROLL_SUCCESS("messages.bulk_payroll_successfully"),;
+    BULK_PAYROLL_SUCCESS("messages.bulk_payroll_successfully"),
+    EMPLOYEE_ALLOWANCE_CREATED_SUCCESSFULLY("messages.employee_allowance_created_successfully"),
+    EMPLOYEE_ALLOWANCE_ALREADY_EXISTS("messages.employee_allowance_already_exists"),
+    EMPLOYEE_DEDUCTION_ALREADY_EXISTS("messages.employee_deduction_already_exists"),;
 
     private String code;
 

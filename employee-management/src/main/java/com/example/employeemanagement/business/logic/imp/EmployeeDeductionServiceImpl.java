@@ -60,14 +60,24 @@ public class EmployeeDeductionServiceImpl implements EmployeeDeductionService {
 
     }
 
-    Optional<Employee> employeeRetrieved = employeeRepository.findByIdAndStatusNot(createEmployeeDeductionRequest.getEmployeeId(),
-            Status.DELETED);
-        if (employeeRetrieved.isEmpty()) {
-        message = messageService.getMessage(Messages.EMPLOYEE_NOT_FOUND.getCode(), new String[]{},
+    Optional<EmployeeDeduction> employeeDeductionRetrieved = employeeDeductionRepository.findByEmployeeIdAndDeductionIdAndStatusNot(
+            createEmployeeDeductionRequest.getEmployeeId(),createEmployeeDeductionRequest.getDeductionId(), Status.DELETED);
+    if (employeeDeductionRetrieved.isPresent()) {
+        message = messageService.getMessage(Messages.EMPLOYEE_DEDUCTION_ALREADY_EXISTS.getCode(), new String[]{},
                 locale);
         return buildResponse(400, false, message, null, null,
                 null);
     }
+
+
+    Optional<Employee> employeeRetrieved = employeeRepository.findByIdAndStatusNot(createEmployeeDeductionRequest.getEmployeeId(),
+        Status.DELETED);
+    if (employeeRetrieved.isEmpty()) {
+    message = messageService.getMessage(Messages.EMPLOYEE_NOT_FOUND.getCode(), new String[]{},
+            locale);
+    return buildResponse(400, false, message, null, null,
+            null);
+}
 
     Optional<Deduction> deductionRetrieved = deductionsRepository.findByIdAndStatusNot(createEmployeeDeductionRequest.
                     getDeductionId(), Status.DELETED);

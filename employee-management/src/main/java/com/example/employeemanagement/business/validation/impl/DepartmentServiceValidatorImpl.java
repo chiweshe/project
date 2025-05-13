@@ -7,6 +7,8 @@ public class DepartmentServiceValidatorImpl implements DepartmentServiceValidato
 
     @Override
     public boolean isRequestValid(CreateDepartmentRequest createDepartmentRequest) {
+
+        //to add validation
         return true;
     }
 }

@@ -8,7 +8,6 @@ import java.util.Locale;
 public interface TaxSlabService {
 
     TaxSlabResponse create(CreateTaxSlabRequest createTaxSlabRequest, Locale locale, String username);
-
     TaxSlabResponse findById(Long id, Locale locale);
     TaxSlabResponse findAll(Locale locale);
     TaxSlabResponse findAllAsPages(Pageable pageable, Locale locale);

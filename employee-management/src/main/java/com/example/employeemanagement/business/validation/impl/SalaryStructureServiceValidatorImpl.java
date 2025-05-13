@@ -7,6 +7,8 @@ public class SalaryStructureServiceValidatorImpl implements SalaryStructureServi
 
     @Override
     public boolean isRequestValid(CreateSalaryStructureRequest request) {
+
+        //to add validation
         return true;
     }
 }

@@ -4,6 +4,6 @@ import com.example.employeemanagement.utils.requests.CreateTaxSlabRequest;
 
 public interface TaxSlabServiceValidator {
 
-    boolean validate(CreateTaxSlabRequest createTaxSlabRequest);
+    boolean validate(CreateTaxSlabRequest request);
 
 }

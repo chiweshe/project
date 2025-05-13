@@ -2,10 +2,7 @@ package com.example.employeemanagement.business.logic.imp;
 
 import com.example.employeemanagement.business.logic.api.EmployeeAllowanceService;
 import com.example.employeemanagement.business.validation.api.EmployeeAllowanceServiceValidator;
-import com.example.employeemanagement.domain.Allowance;
-import com.example.employeemanagement.domain.Employee;
-import com.example.employeemanagement.domain.EmployeeAllowance;
-import com.example.employeemanagement.domain.Status;
+import com.example.employeemanagement.domain.*;
 import com.example.employeemanagement.repository.AllowanceRepository;
 import com.example.employeemanagement.repository.EmployeeAllowanceRepository;
 import com.example.employeemanagement.repository.EmployeeRepository;
@@ -61,6 +58,15 @@ public class EmployeeAllowanceServiceImpl implements EmployeeAllowanceService {
 
         }
 
+        Optional<EmployeeAllowance> employeeAllowanceRetrieved = employeeAllowanceRepository.findByEmployeeIdAndAllowanceIdAndStatusNot(
+                createEmployeeAllowanceRequest.getEmployeeId(),createEmployeeAllowanceRequest.getAllowanceId(), Status.DELETED);
+        if (employeeAllowanceRetrieved.isPresent()) {
+            message = messageService.getMessage(Messages.EMPLOYEE_ALLOWANCE_ALREADY_EXISTS.getCode(), new String[]{},
+                    locale);
+            return buildResponse(400, false, message, null, null,
+                    null);
+        }
+
         Optional<Employee> employeeRetrieved = employeeRepository.findByIdAndStatusNot(createEmployeeAllowanceRequest.getEmployeeId(),
                 Status.DELETED);
         if (employeeRetrieved.isEmpty()) {
@@ -86,7 +92,7 @@ public class EmployeeAllowanceServiceImpl implements EmployeeAllowanceService {
         EmployeeAllowance employeeAllowanceSaved = employeeAllowanceRepository.save(employeeAllowanceToBeSaved);
         EmployeeAllowanceDto employeeAllowanceDtoReturned = modelMapper.map(employeeAllowanceSaved, EmployeeAllowanceDto.class);
 
-        message = messageService.getMessage(Messages.EMPLOYEE_CREATED_SUCCESSFULLY.getCode(), new String[]{}, locale);
+        message = messageService.getMessage(Messages.EMPLOYEE_ALLOWANCE_CREATED_SUCCESSFULLY.getCode(), new String[]{}, locale);
         return buildResponse(201, true, message, employeeAllowanceDtoReturned, null,
                 null);
 
