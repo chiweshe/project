@@ -50,11 +50,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         boolean isRequestValid = employeeServiceValidator.isRequestValid(createEmployeeRequest);
         if (!isRequestValid) {
 
-            message = messageService.getMessage(Messages.INVALID_REQUEST_SUPPLIED.getCode(), new String[]{},
-                    locale);
-            return buildResponse(400, false, message, null, null,
-                    null);
+            message = employeeServiceValidator.getErrorMessage(createEmployeeRequest);
 
+            if (message == null) {
+                message = messageService.getMessage(Messages.INVALID_REQUEST_SUPPLIED.getCode(), new String[]{},
+                        locale);
+            }
+            return buildResponse(400, false, message, null, null, null);
         }
 
         Optional<Employee> employeeRetrieved = employeeRepository.findByEmployeeCodeAndEmailAndPhone(createEmployeeRequest.getEmployeeCode(),
